@@ -4,6 +4,7 @@ import { userColumns, userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+//TODO : make reusable datatable
 const Datatable = () => {
   const [data, setData] = useState(userRows);
 
