@@ -1,6 +1,6 @@
 import "./datatable.scss";
-import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import {DataGrid} from "@mui/x-data-grid";
+import {Link} from "react-router-dom";
 import {useGetCategoriesQuery} from "../../features/api/Categories/categoriesApi";
 
 const UsersDatatable = () => {
@@ -27,7 +27,7 @@ const UsersDatatable = () => {
     ];
 
 
-    const handleDelete = (id) => {};
+    const handleDelete = (id) => { return id};
 
     const actionColumn = [
         {

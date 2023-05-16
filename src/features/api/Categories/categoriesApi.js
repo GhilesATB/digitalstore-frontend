@@ -1,4 +1,4 @@
-import { apiSlice } from '../apiSlice';
+import {apiSlice} from '../apiSlice';
 import {categoriesEndpoint} from "./endpoints/getCategories";
 import {addNewCategoryEndpoint} from "./endpoints/addNewCategory";
 import {editCategoryEndpoint} from "./endpoints/editCategory";
@@ -22,5 +22,5 @@ export const {
     useAddNewCategoryMutation,
     useEditCategoryMutation,
     useDeleteCategoryMutation,
-} = apiSlice;
+} = categoriesApi;
 
