@@ -24,3 +24,5 @@ export const {
     useDeleteCategoryMutation,
 } = categoriesApi;
 
+
+export const selectCategoriesResult = categoriesApi.endpoints.getCategories.select()
