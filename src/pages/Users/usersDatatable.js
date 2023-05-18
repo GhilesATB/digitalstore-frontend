@@ -1,85 +1,65 @@
 import "./datatable.scss";
-import {DataGrid} from "@mui/x-data-grid";
-import {Link} from "react-router-dom";
+import * as React from 'react';
+import {useState} from 'react';
+import Paper from '@mui/material/Paper';
 import {useGetCategoriesQuery} from "../../features/api/Categories/categoriesApi";
+import {Alert, CircularProgress, TablePagination} from "@mui/material";
+import Datatable from "../../components/datatable/Datatable";
+
 
 const UsersDatatable = () => {
+    const [page, setPage] = useState(1);
+    const [per_page, setPerPage] = useState(10);
+    const handleChangePage = (event, page) => {
+        setPage(page + 1);
+    };
+    const handleChangeRowsPerPage = (event) => {
+        setPerPage(parseInt(event.target.value, 10));
+    };
+
     const {
-        data: categories,
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    } = useGetCategoriesQuery()
-
-    const userColumns = [
-        { field: "id", headerName: "ID", width: 300 },
-        {
-            field: "name",
-            headerName: "name",
-            width: 300,
-        },
-        {
-            field: "description",
-            headerName: "description",
-            width: 300,
-        },
-    ];
-
-
-    const handleDelete = (id) => { return id};
-
-    const actionColumn = [
-        {
-            field: "action",
-            headerName: "Action",
-            width: 200,
-            renderCell: (params) => {
-                return (
-                    <div className="cellAction">
-                        <Link to="/users/test" style={{ textDecoration: "none" }}>
-                            <div className="viewButton">View</div>
-                        </Link>
-                        <div
-                            className="deleteButton"
-                            onClick={() => handleDelete(params.row.id)}
-                        >
-                            Delete
-                        </div>
-                    </div>
-                );
-            },
-        },
-    ];
-
+        data: categories, isLoading, isSuccess, isError, error
+    } = useGetCategoriesQuery({page: page, per_page: per_page});
+    const datatable = (count) => {
+        return (<>
+            <Paper>
+                <Datatable
+                    data={categories.data}
+                    headers={['Id', 'Name', 'Description', 'action']}
+                    fields={['Id', 'Name', 'Description']}
+                    view={() => alert('view')}
+                    edit={() => alert('edit')}
+                    delete={() => alert('delete')}
+                ></Datatable>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={count}
+                    rowsPerPage={per_page}
+                    page={page - 1}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Paper>
+        </>);
+    }
     let content
 
     if (isLoading) {
-        content = 'loading'
+        content = <CircularProgress />
     } else if (isSuccess) {
-        content = <DataGrid
-            className="datagrid"
-            rows={categories.data}
-            columns={userColumns.concat(actionColumn)}
-            pageSize={9}
-            rowsPerPageOptions={[9]}
-            checkboxSelection
-        />
+
+        const count = categories.meta.total;
+
+        content = datatable(count);
+
     } else if (isError) {
-        content = <div>{error.toString()}</div>
+        content = <div><Alert variant="filled" severity="error">
+            This is an error alert — check it out!
+        </Alert></div>
     }
 
-    return (
-        <div className="datatable">
-            <div className="datatableTitle">
-                Add New User
-                <Link to="/users/new" className="link">
-                    Add New
-                </Link>
-            </div>
-            {content}
-        </div>
-    );
+    return (<>{content}</>);
 };
 
 export default UsersDatatable;
