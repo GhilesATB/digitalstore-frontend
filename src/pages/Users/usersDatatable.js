@@ -18,11 +18,7 @@ const UsersDatatable = () => {
     };
 
     const {
-        data: categories,
-        isLoading,
-        isSuccess,
-        isError,
-        error
+        data: categories, isLoading, isSuccess, isError, error
     } = useGetCategoriesQuery({page: page, per_page: per_page});
     const datatable = (count) => {
         return (<>
@@ -31,13 +27,16 @@ const UsersDatatable = () => {
                     data={categories.data}
                     headers={['Id', 'Name', 'Description', 'action']}
                     fields={['Id', 'Name', 'Description']}
-                />
+                    view={() => alert('view')}
+                    edit={() => alert('edit')}
+                    delete={() => alert('delete')}
+                ></Datatable>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={count}
                     rowsPerPage={per_page}
-                    page={page}
+                    page={page - 1}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />

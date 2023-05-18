@@ -1,9 +1,9 @@
-import DataTableButtonGroup from "./dataTableButtongroup";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import TableCell from "@mui/material/TableCell";
 
 const DataTableRow = (props) => {
+
     const dataFields = Object.keys(props.row)
     const displayedFields = props.fields.filter(function (n) {
         return dataFields.indexOf(n.toLowerCase()) !== -1;
@@ -22,7 +22,7 @@ const DataTableRow = (props) => {
     );
 
     return (
-        <TableRow>{cellRender(props.row)}<DataTableButtonGroup/>
+        <TableRow>{cellRender(props.row)}{props.children}
         </TableRow>
     );
 }
