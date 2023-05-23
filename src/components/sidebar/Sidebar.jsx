@@ -12,6 +12,7 @@ import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSyst
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import {Link} from "react-router-dom";
+import CategoryIcon from '@mui/icons-material/Category';
 import {DarkModeContext} from "../../context/darkModeContext";
 import {useContext} from "react";
 
@@ -26,25 +27,31 @@ const Sidebar = () => {
       </div>
       <hr />
       <div className="center">
-        <ul>
-          <p className="title">MAIN</p>
-          <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
-          </li>
-          <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Users</span>
-            </li>
-          </Link>
-          <Link to="/products" style={{ textDecoration: "none" }}>
-            <li>
-              <StoreIcon className="icon" />
-              <span>Products</span>
-            </li>
-          </Link>
+          <ul>
+              <p className="title">MAIN</p>
+              <li>
+                  <DashboardIcon className="icon"/>
+                  <span>Dashboard</span>
+              </li>
+              <p className="title">LISTS</p>
+              <Link to="/users" style={{textDecoration: "none"}}>
+                  <li>
+                      <CategoryIcon className="icon"/>
+                      <span>Categories</span>
+                  </li>
+              </Link>
+              <Link to="/test" style={{textDecoration: "none"}}>
+                  <li>
+                      <PersonOutlineIcon className="icon"/>
+                      <span>test</span>
+                  </li>
+              </Link>
+              <Link to="/products" style={{textDecoration: "none"}}>
+                  <li>
+                      <StoreIcon className="icon"/>
+                      <span>Products</span>
+                  </li>
+              </Link>
           <li>
             <CreditCardIcon className="icon" />
             <span>Orders</span>

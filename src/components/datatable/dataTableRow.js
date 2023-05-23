@@ -5,6 +5,7 @@ import TableCell from "@mui/material/TableCell";
 const DataTableRow = (props) => {
 
     const dataFields = Object.keys(props.row)
+
     const displayedFields = props.fields.filter(function (n) {
         return dataFields.indexOf(n.toLowerCase()) !== -1;
     });
@@ -22,7 +23,7 @@ const DataTableRow = (props) => {
     );
 
     return (
-        <TableRow>{cellRender(props.row)}{props.children}
+        <TableRow data-id={props.row.id}>{cellRender(props.row)}{props.children}
         </TableRow>
     );
 }

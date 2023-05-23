@@ -4,6 +4,7 @@ import {addNewCategoryEndpoint} from "./endpoints/addNewCategory";
 import {editCategoryEndpoint} from "./endpoints/editCategory";
 import {deleteCategoryEndpoint} from "./endpoints/deleteCategory";
 import {fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import {categoryByIdEndpoint} from "./endpoints/getCategory";
 
 const categoriesApi = apiSlice.injectEndpoints({
     tagTypes: ["categories"],
@@ -11,6 +12,7 @@ const categoriesApi = apiSlice.injectEndpoints({
 
     endpoints: (builder) => ({
         getCategories: categoriesEndpoint(builder),
+        getCategoryById: categoryByIdEndpoint(builder),
         addNewCategory: addNewCategoryEndpoint(builder),
         editCategory: editCategoryEndpoint(builder),
         deleteCategory: deleteCategoryEndpoint(builder),
@@ -19,6 +21,7 @@ const categoriesApi = apiSlice.injectEndpoints({
 
 export const {
     useGetCategoriesQuery,
+    useGetCategoryByIdQuery,
     useAddNewCategoryMutation,
     useEditCategoryMutation,
     useDeleteCategoryMutation,

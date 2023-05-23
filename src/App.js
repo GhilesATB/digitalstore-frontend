@@ -2,7 +2,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
-import Users from "./pages/Users";
+import Users from "./pages/Categories";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {productInputs, userInputs} from "./formSource";
 import "./style/dark.scss";
@@ -17,8 +17,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
+            <Route index element={<Home/>}/>
+            <Route path="login" element={<Login/>}/>
             <Route path="users">
               <Route index element={<Users />} />
               <Route path=":userId" element={<Single />} />
