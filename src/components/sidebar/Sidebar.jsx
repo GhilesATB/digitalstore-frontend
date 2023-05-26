@@ -34,7 +34,7 @@ const Sidebar = () => {
                   <span>Dashboard</span>
               </li>
               <p className="title">LISTS</p>
-              <Link to="/users" style={{textDecoration: "none"}}>
+              <Link to="/categories" style={{textDecoration: "none"}}>
                   <li>
                       <CategoryIcon className="icon"/>
                       <span>Categories</span>

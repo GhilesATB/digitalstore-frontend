@@ -2,7 +2,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
-import Users from "./pages/Categories";
+import Categories from "./pages/Categories";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {productInputs, userInputs} from "./formSource";
 import "./style/dark.scss";
@@ -19,16 +19,16 @@ function App() {
           <Route path="/">
             <Route index element={<Home/>}/>
             <Route path="login" element={<Login/>}/>
-            <Route path="users">
-              <Route index element={<Users />} />
-              <Route path=":userId" element={<Single />} />
+            <Route path="categories">
+              <Route index element={<Categories />} />
+              <Route path=":categoryId" element={<Single />} />
               <Route
                 path="new"
-                element={<New inputs={userInputs} title="Add New User" />}
+                element={<New inputs={userInputs} title="Add New Category" />}
               />
             </Route>
             <Route path="products">
-              <Route index element={<Users />} />
+              <Route index element={<Categories />} />
               <Route path=":productId" element={<Single />} />
               <Route
                 path="new"

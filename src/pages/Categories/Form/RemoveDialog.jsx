@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {useDeleteCategoryMutation} from "../../../features/api/Categories/categoriesApi";
 import {useEffect} from "react";
 
-export const RemoveDialog = ({open,handleClickOpen,handleClose,handleRemove,categoryId}) => {
+export const RemoveDialog = ({open,handleClose,categoryId}) => {
 
     const [deleteCategory, { isLoading, error, isSuccess, isError }] =
         useDeleteCategoryMutation();

@@ -6,9 +6,9 @@ import {useGetCategoryByIdQuery} from "../../../features/api/Categories/categori
 import Box from "@mui/material/Box";
 
 
-const ViewUserForm = (props) => {
+const ViewUserForm = ({categoryId}) => {
 
-    const {data: category, isLoading, isSuccess, isError, error} = useGetCategoryByIdQuery(props?.id);
+    const {data: category, isLoading, isSuccess, isError, error} = useGetCategoryByIdQuery(categoryId);
 
     const [file, setFile] = useState("");
 
@@ -18,11 +18,7 @@ const ViewUserForm = (props) => {
                 <Stack spacing={5} sx={{margin: '30px', width: '300px'}}>
                     <Box sx={{ textAlign: 'center' }}>
                         <img style={{borderRadius: "50%", width: "150px", position: "relative", margin: "auto"}}
-                             src={
-                                 file
-                                     ? URL.createObjectURL(file)
-                                     : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                             }
+                             src={category?.data?.image}
                              alt=""
                         />
                     </Box>

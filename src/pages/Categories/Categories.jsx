@@ -22,6 +22,7 @@ const Categories = (props) => {
     const [per_page, setPerPage] = useState(10);
     const [categoryId, setCategoryId] = useState("");
     const [action, setAction] = useState('');
+    const [open, setOpen] = React.useState(false);
 
     const handleChangePage = (event, page) => {
         setPage(page + 1);
@@ -68,7 +69,6 @@ const Categories = (props) => {
         handleClickOpen();
     }
 
-    const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -100,7 +100,7 @@ const Categories = (props) => {
                         <DatatableHead headers={['Name', 'Description', 'action']} fields={[]}/>
                         <TableBody>
                             {categories.data.map((row, key) => (
-                                <DataTableRow row={row} fields={['Name', 'Description']} key={key}>
+                                <DataTableRow row={row} fields={['Name', 'Description',]} key={key}>
                                     <DataTableButtonGroup
                                         view={view(row.id)}
                                         edit={edit(row.id)}
@@ -122,15 +122,12 @@ const Categories = (props) => {
                 />
             </Paper>
             <Drawer
-                sx={{
-                    width:'400px',
-                }}
                 open={state['right']}
                     onOpen={toggleDrawer("right", true)}
                     onClose={toggleDrawer("right", false)}>
-                    {action === 'create' ? <CreateFrom From /> : ""}
-                    {action === 'view' ? <ViewFrom id={categoryId} /> : ""}
-                    {action === 'edit' ? <EditForm id={categoryId} /> : ""}
+                    {action === 'create' ? <CreateFrom handleClose = {handleClose} From /> : ""}
+                    {action === 'view' ? <ViewFrom handleClose = {toggleDrawer("right", false)} categoryId={categoryId} /> : ""}
+                    {action === 'edit' ? <EditForm handleClose = {toggleDrawer("right", false)} categoryId={categoryId} /> : ""}
             </Drawer>
         </>);
     }

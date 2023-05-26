@@ -4,8 +4,9 @@ export const addNewCategoryEndpoint = (builder) => {
             url: "api/categories",
             method: "POST",
             body: payload,
+            formData:true,
             headers: {
-                "Content-type": "application/json; charset=UTF-8",
+                "Accept": "application/json; charset=UTF-8",
             },
         }),
         invalidatesTags: ["categories"],
