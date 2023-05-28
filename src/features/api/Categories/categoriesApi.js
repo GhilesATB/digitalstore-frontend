@@ -7,9 +7,8 @@ import {fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {categoryByIdEndpoint} from "./endpoints/getCategory";
 
 const categoriesApi = apiSlice.injectEndpoints({
-    tagTypes: ["categories"],
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000" }),
-
+    baseQuery: fetchBaseQuery({baseUrl: "http://localhost:8000"}),
+    tagTypes: ['Category'],
     endpoints: (builder) => ({
         getCategories: categoriesEndpoint(builder),
         getCategoryById: categoryByIdEndpoint(builder),

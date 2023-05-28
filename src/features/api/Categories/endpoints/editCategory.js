@@ -8,7 +8,7 @@ export const editCategoryEndpoint = (builder) => {
                 "Accept": "application/json; charset=UTF-8",
             },
         }),
-        invalidatesTags: ["categories"],
+        invalidatesTags: ["category"],
     })
 }
 

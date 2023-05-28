@@ -1,10 +1,10 @@
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import * as React from "react";
 import {Alert, Button, CircularProgress, Stack, TextField} from "@mui/material";
-import { useEditCategoryMutation, useGetCategoryByIdQuery } from "../../../features/api/Categories/categoriesApi";
-import { CloseOutlined} from "@mui/icons-material";
-import { useFormik } from "formik";
-import { validation, formValues } from "./createSchema";
+import {useEditCategoryMutation, useGetCategoryByIdQuery} from "../../../features/api/Categories/categoriesApi";
+import {CloseOutlined} from "@mui/icons-material";
+import {useFormik} from "formik";
+import {validation} from "./createSchema";
 
 const EditCategoryForm = ({handleClose,categoryId}) => {
     
@@ -41,8 +41,11 @@ const EditCategoryForm = ({handleClose,categoryId}) => {
           handleClose();
         })
         .catch((error) => {
-          alert('error')
-          handleClose();
+            if (Object.keys(error).length !== 0) {
+                alert(JSON.stringify(error))
+            }
+
+            handleClose();
         });
         },
       });
@@ -66,26 +69,30 @@ const EditCategoryForm = ({handleClose,categoryId}) => {
     }else{
     content =  <form  onSubmit={formik.handleSubmit} encType='multipart/form-data'>
         <Stack spacing={5} sx={{margin: '30px', width: '300px'}}>
-    
+
             <h1>Edit Category</h1>
+
             <img style={{borderRadius: "50%", width: "150px", position: "relative", margin: "auto"}}
                  src={
-                    isFilePicked
+                     isFilePicked
                          ? URL.createObjectURL(selectedFile)
                          : category?.data?.image
-                }
+                 }
                  alt=""
             />
+
             <div className="formInput">
                 <label htmlFor="image">
-                    Image:  {!isFilePicked ? <DriveFolderUploadOutlinedIcon style={{position: "absolute",top: "13%",left: "64%",}} className="icon"/>:""}
-                    
+                    Image: {!isFilePicked ?
+                    <DriveFolderUploadOutlinedIcon style={{position: "absolute", top: "13%", left: "64%",}}
+                                                   className="icon"/> : ""}
+
                 </label>
                 <input
                     type="file"
                     id="image"
-                    name="image" 
-                    onChange={changeHandler} 
+                    name="image"
+                    onChange={changeHandler}
                     style={{display: "none"}}
                 />
             </div>
