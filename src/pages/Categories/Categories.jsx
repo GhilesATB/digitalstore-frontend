@@ -98,14 +98,6 @@ export default function Categories() {
         handleClickOpen();
     }
 
-    const toggleDrawer = (open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-
-        setState(!open);
-    };
-
     let content = '';
 
     if (isLoading) {

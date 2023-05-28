@@ -1,5 +1,4 @@
 import * as React from "react";
-import {useState} from "react";
 import {Alert, CircularProgress, Stack} from "@mui/material";
 import {useGetCategoryByIdQuery} from "../../../features/api/Categories/categoriesApi";
 import Box from "@mui/material/Box";
@@ -8,8 +7,6 @@ import Box from "@mui/material/Box";
 const ViewUserForm = ({categoryId}) => {
 
     const {data: category, isLoading, isSuccess, isError, error} = useGetCategoryByIdQuery(categoryId);
-
-    const [file, setFile] = useState("");
 
     const form = () => {
         return (

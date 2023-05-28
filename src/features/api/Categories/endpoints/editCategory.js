@@ -13,6 +13,5 @@ export const editCategoryEndpoint = (builder) => {
 }
 
 const getId = (data) =>{
-    const {id} = data;  
     return data.get('id');
 }

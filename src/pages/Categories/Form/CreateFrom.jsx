@@ -6,7 +6,7 @@ import {CloseOutlined} from "@mui/icons-material";
 import {useFormik} from "formik";
 import {formValues, validation} from "./createSchema";
 
-const CreateCategoryForm = (props) => {
+const CreateCategoryForm = () => {
     
     const [selectedFile, setSelectedFile] = React.useState();
     const [isFilePicked, setIsFilePicked] = React.useState(false);
@@ -50,7 +50,7 @@ const CreateCategoryForm = (props) => {
 
 
     
-    return (<form  onSubmit={formik.handleSubmit} enctype='multipart/form-data'>
+    return (<form  onSubmit={formik.handleSubmit} encType='multipart/form-data'>
         <Stack spacing={5} sx={{margin: '30px', width: '300px'}}>
 
             <h1>Create new Category</h1>
