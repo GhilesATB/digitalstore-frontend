@@ -5,7 +5,7 @@ export const editCategoryEndpoint = (builder) => {
             method: "POST",
             body: category,
             headers: {
-                "Accept": "application/json; charset=UTF-8",
+                "Accept": "multipart/form-data;",
             },
         }),
         invalidatesTags: ["category"],

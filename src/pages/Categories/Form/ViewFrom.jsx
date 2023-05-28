@@ -11,13 +11,17 @@ const ViewUserForm = ({categoryId}) => {
     const form = () => {
         return (
             <form>
-                <Stack spacing={5} sx={{margin: '30px', width: '300px'}}>
+                <Stack spacing={5} sx={{margin: '30px', width: '320px'}}>
 
-                    <img style={{borderRadius: "50%", width: "150px", position: "relative", margin: "auto"}}
-                         src={category?.data?.image ?? "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                         }
-                         alt=""
-                    />
+
+                    <Box sx={{display: 'flex'}}>
+                        <img style={{width: "320px", height: "240px", position: "relative", margin: "auto"}}
+                             src={category?.data?.image ?? "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                             }
+                             alt=""
+                        />
+                    </Box>
+
 
                     <Box sx={{textAlign: 'left'}}>
                         Name :<br/>

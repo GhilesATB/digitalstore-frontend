@@ -1,23 +1,37 @@
-import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
+import BackupRoundedIcon from '@mui/icons-material/BackupRounded';
 import * as React from "react";
-import {Alert, Button, CircularProgress, Stack, TextField} from "@mui/material";
+import {Alert, Button, CircularProgress, Fab, Stack, TextField} from "@mui/material";
 import {useEditCategoryMutation, useGetCategoryByIdQuery} from "../../../features/api/Categories/categoriesApi";
 import {CloseOutlined} from "@mui/icons-material";
 import {useFormik} from "formik";
 import {validation} from "./createSchema";
+import Box from "@mui/material/Box";
+import {toast} from "react-toastify";
+import {setFormikErrors} from '../../../utils/HandleErrors';
 
-const EditCategoryForm = ({handleClose,categoryId}) => {
-    
+const EditCategoryForm = ({handleClose, categoryId}) => {
+
+    const notifySuccess = () => {
+        toast.success("Element updated with success", {
+            toastId: "success-notification",
+            autoClose: 2000,
+        });
+    };
+    const notifyError = (msg) =>
+        toast.error(msg ?? "Something went wrong, please try again later", {
+            toastId: "error-notification",
+            autoClose: 2000,
+        });
+
     const {
         data: category,
         isLoading: isLoadingCategory,
-        isSuccess:isSuccessCategoryFetch,
+        isSuccess: isSuccessCategoryFetch,
         isError: isErrorCategoryFetch,
         error: errorCategory
     } = useGetCategoryByIdQuery(categoryId);
 
     const [editCategory] = useEditCategoryMutation();
-
     const [selectedFile, setSelectedFile] = React.useState();
     const [isFilePicked, setIsFilePicked] = React.useState(false);
     
@@ -29,24 +43,33 @@ const EditCategoryForm = ({handleClose,categoryId}) => {
 
             var data = new FormData();
             Object.entries(values).forEach(entry => {
-              const [key, value] = entry;
-              data.append(key, value);
+                const [key, value] = entry;
+                if (value) {
+                    data.append(key, value);
+                }
             });
-  
-          data.append('image', selectedFile);
-    
-        editCategory(data).unwrap()
-        .then(() => {
-          alert('success');
-          handleClose();
-        })
-        .catch((error) => {
-            if (Object.keys(error).length !== 0) {
-                alert(JSON.stringify(error))
+
+
+            if (selectedFile) {
+                data.set('image', selectedFile);
             }
 
-            handleClose();
-        });
+            editCategory(data).unwrap()
+                .then(() => {
+                    notifySuccess();
+                    formik.resetForm();
+                    handleClose();
+                })
+                .catch((error) => {
+                    if (error.status === 422) {
+                        setFormikErrors(formik, error.data.errors);
+                    } else if (error.status === 400) {
+                        notifyError(error.data.message)
+                    } else {
+                        notifyError(error.data.message);
+                        handleClose();
+                    }
+                });
         },
       });
     
@@ -67,51 +90,60 @@ const EditCategoryForm = ({handleClose,categoryId}) => {
     if (isLoadingCategory) {
         content = <CircularProgress />
     }else{
-    content =  <form  onSubmit={formik.handleSubmit} encType='multipart/form-data'>
-        <Stack spacing={5} sx={{margin: '30px', width: '300px'}}>
+        content = <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+            <Stack spacing={5} sx={{margin: '30px', width: '300px'}}>
 
-            <h1>Edit Category</h1>
+                <h1>Edit Category</h1>
+                <Box sx={{display: 'flex'}}>
+                    <div>
+                        <img style={{width: "320px", height: "240px", position: "relative", margin: "auto"}}
+                             src={
+                                 isFilePicked
+                                     ? URL.createObjectURL(selectedFile)
+                                     : category?.data?.image
+                             }
+                             alt=""
+                        />
+                        <div className="formInput">
+                            <Fab color="primary" aria-label="upload"
+                                 style={{position: "relative", marginLeft: "-16px", top: '-32px'}}>
+                                {!isFilePicked ?
+                                    <>
+                                        <label htmlFor="image">
+                                            <input
+                                                type="file"
+                                                id="image"
+                                                name="image"
+                                                onChange={changeHandler}
+                                                style={{display: "none"}}
+                                            />
+                                            <BackupRoundedIcon fontSize={"large"}
+                                                               style={{position: "relative", margin: "auto"}}
+                                                               className="icon"/>
+                                        </label></> :
+                                    ""}
+                                {isFilePicked ?
+                                    <CloseOutlined fontSize={"large"} style={{position: "relative", margin: "auto"}}
+                                                   className="icon" onClick={cancelFile}/> : ""}
+                            </Fab>
+                        </div>
+                    </div>
+                </Box>
 
-            <img style={{borderRadius: "50%", width: "150px", position: "relative", margin: "auto"}}
-                 src={
-                     isFilePicked
-                         ? URL.createObjectURL(selectedFile)
-                         : category?.data?.image
-                 }
-                 alt=""
-            />
-
-            <div className="formInput">
-                <label htmlFor="image">
-                    Image: {!isFilePicked ?
-                    <DriveFolderUploadOutlinedIcon style={{position: "absolute", top: "13%", left: "64%",}}
-                                                   className="icon"/> : ""}
-
-                </label>
-                <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    onChange={changeHandler}
-                    style={{display: "none"}}
+                <TextField
+                    id="standard-multiline-static"
+                    label="Name"
+                    name="Name"
+                    multiline
+                    variant="standard"
+                    inputProps={{inputMode: "text"}}
+                    placeholder="Name ..."
+                    InputLabelProps={{shrink: true}}
+                    onChange={formik.handleChange}
+                    value={formik?.values?.name}
+                    error={formik.touched.description && Boolean(formik.errors.name)}
+                    helperText={formik.touched.description && formik.errors.name}
                 />
-            </div>
-            {isFilePicked ? <CloseOutlined style={{position: "absolute",top: "13%",left: "64%",}} className="icon" onClick={cancelFile}/>:""}
-            
-
-            <TextField
-                id="filled-error-helper-text"
-                label="Name"
-                name="name"
-                variant="standard"
-                inputProps={{inputMode: 'text'}}
-                placeholder="Name"
-                InputLabelProps={{shrink: true}}
-                onChange={formik.handleChange}
-                value={formik?.values?.name}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-            />
 
             <TextField
                 id="standard-multiline-static"
@@ -119,7 +151,7 @@ const EditCategoryForm = ({handleClose,categoryId}) => {
                 name="description"
                 multiline
                 variant="standard"
-                maxRows={5}
+                rows={5}
                 inputProps={{inputMode: "text"}}
                 placeholder="Description ..."
                 InputLabelProps={{shrink: true}}

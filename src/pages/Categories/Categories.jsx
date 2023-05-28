@@ -10,6 +10,8 @@ import ViewFrom from "./Form/ViewFrom";
 import EditForm from "./Form/EditFrom";
 import CreateFrom from "./Form/CreateFrom";
 import {RemoveDialog} from './Form/RemoveDialog';
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const handleGetRowId = (e) => {
@@ -21,7 +23,7 @@ export default function Categories() {
     const columns = [
         {field: 'id', headerName: 'ID', flex: 1},
         {
-            field: 'image', headerName: 'Image', flex: 1,
+            field: 'thumbnail', headerName: 'Image', flex: 1,
             renderCell: (params) => {
                 return (
                     <>
@@ -104,6 +106,7 @@ export default function Categories() {
         content = <CircularProgress/>
     } else {
         content = <>
+            <ToastContainer/>
             <RemoveDialog
                 open={open}
                 handleClickOpen={handleClickOpen}
@@ -114,7 +117,6 @@ export default function Categories() {
                 close={close}
                 open={state}
             >
-
                 {formAction === 'create' ? <CreateFrom handleClose={close}/> : ""}
                 {formAction === 'view' ? <ViewFrom categoryId={categoryId} handleClose={close}/> : ""}
                 {formAction === 'edit' ? <EditForm categoryId={categoryId} handleClose={close}/> : ""}
