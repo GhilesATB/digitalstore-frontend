@@ -8,7 +8,7 @@ import {categoryByIdEndpoint} from "./endpoints/getCategory";
 
 const categoriesApi = apiSlice.injectEndpoints({
     baseQuery: fetchBaseQuery({baseUrl: "http://localhost:8000"}),
-    tagTypes: ['Category'],
+    tagTypes: ['categories'],
     endpoints: (builder) => ({
         getCategories: categoriesEndpoint(builder),
         getCategoryById: categoryByIdEndpoint(builder),

@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {useDeleteCategoryMutation} from "../../../features/api/Categories/categoriesApi";
+import {notifySuccess} from '../../../utils/Notifications';
 
 export const RemoveDialog = ({open,handleClose,categoryId}) => {
 
@@ -15,7 +16,7 @@ export const RemoveDialog = ({open,handleClose,categoryId}) => {
 
     useEffect(() => {
         if (isSuccess) {
-            alert('Post deleted successfully');
+            notifySuccess();
             handleClose();
         }
         if (isError) {

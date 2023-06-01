@@ -9,6 +9,6 @@ export const addNewCategoryEndpoint = (builder) => {
                 "Accept": "application/json; charset=UTF-8",
             },
         }),
-        invalidatesTags: ["category"],
+        invalidatesTags: ["categories"],
     });
 }

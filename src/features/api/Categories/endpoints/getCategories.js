@@ -9,6 +9,6 @@ export const categoriesEndpoint = (builder) => {
 
             }
         },
-        providesTags: ["category"],
+        providesTags: ["categories"],
     });
 };
