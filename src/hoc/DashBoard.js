@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {styled, useTheme} from '@mui/material/styles';
+import {createTheme, styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -11,6 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ListItemText from '@mui/material/ListItemText';
 import CloseIcon from '@mui/icons-material/Close';
 import Sidebar from '../components/sidebar/Sidebar'
+import {frFR} from '@mui/material/locale';
 
 const drawerWidth = 280;
 
@@ -87,7 +88,14 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 );
 
 export default function MainDrawer(props) {
-    const theme = useTheme();
+    const theme = createTheme(
+        {
+            palette: {
+                primary: {main: '#1976d2'},
+            },
+        },
+        frFR,
+    );
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = (e) => {

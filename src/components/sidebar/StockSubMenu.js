@@ -18,21 +18,18 @@ const StockSubMenu = ({
     setOpen,
 }) =>{
 
-    const [openMenu, setOpenMenu] = React.useState(open);
-    const [openSecondLevel, setOpenSecondLevel] = React.useState(true);
-    const handleClick = () => {
-      setOpen(!open);
-    };
-  
+    const [openMenu, setMenuOpen] = React.useState(false);
+    const [openSecondLevel, setOpenSecondLevel] = React.useState(false);
+
     const handleClickSecondLevel = () => {
-      setOpenSecondLevel(!openSecondLevel);
+        setOpenSecondLevel(!openSecondLevel);
     };
     return (
-    <Collapse in={open} timeout="auto" unmountOnExit>
-    <List component="div" disablePadding>
-    <ListItemButton>
-        <ListItem
-        sx={{paddingLeft: "25px"}}
+        <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+                <ListItemButton>
+                    <ListItem
+                        sx={{paddingLeft: "25px"}}
         
         onClick={handleClickSecondLevel}
         >

@@ -1,6 +1,6 @@
 import {Box} from "@mui/material";
-import {DataGrid} from "@mui/x-data-grid";
 import DataTableButtonGroup from "../../components/datatable/dataTableButtongroup";
+import {DataGrid} from '@mui/x-data-grid';
 
 
 const CategoriesDataGrid = ({categories,paginationModel, setPaginationModel, renderForm, remove}) =>{
@@ -51,8 +51,18 @@ const CategoriesDataGrid = ({categories,paginationModel, setPaginationModel, ren
 
     return (
         <DataGrid
-            sx={{ borderRadius: 0 }}
+            sx={{borderRadius: 0}}
             rows={categories?.data}
+            /*localeText={{
+                toolbarDensity: 'Size',
+                toolbarDensityLabel: 'Size',
+                toolbarDensityCompact: 'Small',
+                toolbarDensityStandard: 'Medium',
+                toolbarDensityComfortable: 'Large',
+              }}
+              slots={{
+                toolbar: GridToolbar,
+              }}*/
             columns={columns}
             rowCount={categories?.meta?.total}
             paginationMode="server"

@@ -11,18 +11,13 @@ import StockSubMenu from "./StockSubMenu";
 
 const StoreMenu = ({
     useStyles,
-    open,
 }) =>{
 
-    const [openMenu, setOpen] = React.useState(open);
-    const [openSecondLevel, setOpenSecondLevel] = React.useState(true);
+    const [openMenu, setOpen] = React.useState(false);
     const handleClick = () => {
-      setOpen(!openMenu);
+        setOpen(!openMenu);
     };
-  
-    const handleClickSecondLevel = () => {
-      setOpenSecondLevel(!openSecondLevel);
-    };
+
     return (
       <>
       <ListItem  onClick={handleClick}>

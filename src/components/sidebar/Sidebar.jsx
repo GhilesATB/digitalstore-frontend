@@ -21,14 +21,6 @@ const useStyles = (theme) => ({
 export default function Sidebar() {
 
     const [open, setOpen] = React.useState(true);
-    const [openSecondLevel, setOpenSecondLevel] = React.useState(true);
-    const handleClick = () => {
-        setOpen(!open);
-    };
-
-    const handleClickSecondLevel = () => {
-        setOpenSecondLevel(!openSecondLevel);
-    };
 
     return (
         <List

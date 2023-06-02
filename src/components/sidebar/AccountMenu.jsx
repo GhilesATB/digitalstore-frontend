@@ -9,27 +9,22 @@ import UsersSubMenu from "./UsersSubMenu";
 
 const AccountMenu = ({
     useStyles,
-    open,
 }) =>{
 
-    const [openMenu, setOpen] = React.useState(open);
-    const [openSecondLevel, setOpenSecondLevel] = React.useState(true);
+    const [openMenu, setOpen] = React.useState(false);
     const handleClick = () => {
-      setOpen(!openMenu);
+        setOpen(!openMenu);
     };
-  
-    const handleClickSecondLevel = () => {
-      setOpenSecondLevel(!openSecondLevel);
-    };
+
     return (
-      <>
-      <ListItem  onClick={handleClick}>
-          <ListItemIcon>
-            <PeopleOutlinedIcon sx={{marginLeft:'5px'}} color="primary"/>
-          </ListItemIcon>
-          <ListItemText primary="Accounts" />
-          {openMenu ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
+        <>
+            <ListItem onClick={handleClick}>
+                <ListItemIcon>
+                    <PeopleOutlinedIcon sx={{marginLeft: '5px'}} color="primary"/>
+                </ListItemIcon>
+                <ListItemText primary="Accounts"/>
+                {openMenu ? <ExpandLess/> : <ExpandMore/>}
+            </ListItem>
 
         <UsersSubMenu
                 useStyles = {useStyles}

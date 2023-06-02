@@ -62,11 +62,12 @@ export default function Categories({categories, paginationModel, setPaginationMo
             <Stack spacing={5} sx={{margin: '30px'}}>
                 <TopBar renderForm={renderForm}/>
                 <div style={{height: '77vh', width: '100%'}}>
-                    <CategoriesDataGrid categories={categories}
-                                        paginationModel={paginationModel}
-                                        setPaginationModel={setPaginationModel}
-                                        renderForm={renderForm}
-                                        remove={remove}
+                    <CategoriesDataGrid
+                        categories={categories}
+                        paginationModel={paginationModel}
+                        setPaginationModel={setPaginationModel}
+                        renderForm={renderForm}
+                        remove={remove}
                     />
                 </div>
             </Stack>
