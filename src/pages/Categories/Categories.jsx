@@ -2,13 +2,11 @@ import * as React from 'react';
 import {Stack} from "@mui/material";
 import CategoryDrawer from './Drawer';
 import {RemoveDialog} from './Form/RemoveDialog';
-import {ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import CategoriesDataGrid from './CategoriesDataGrid';
 import ActionForm from './ActionFom';
 import TopBar from './TopBar';
 
-export default function Categories({categories, paginationModel, setPaginationModel}) {
+export const Categories = ({categories, paginationModel, setPaginationModel}) => {
 
     const [state, setState] = React.useState(false);
     const [formAction, setFormAction] = React.useState(null);
@@ -41,7 +39,6 @@ export default function Categories({categories, paginationModel, setPaginationMo
 
     return (
         <>
-            <ToastContainer/>
             <RemoveDialog
                 open={open}
                 handleClickOpen={handleClickOpen}
@@ -74,3 +71,5 @@ export default function Categories({categories, paginationModel, setPaginationMo
         </>
     );
 }
+
+export default Categories;

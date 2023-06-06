@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 
-export default function CategoryDrawer(props) {
+export const CategoryDrawer = (props) => {
   return (
     props.open ? <div>
       {
@@ -19,3 +19,5 @@ export default function CategoryDrawer(props) {
     : ""
   );
 }
+
+export default CategoryDrawer;

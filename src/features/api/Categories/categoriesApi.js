@@ -25,6 +25,3 @@ export const {
     useEditCategoryMutation,
     useDeleteCategoryMutation,
 } = categoriesApi;
-
-
-export const selectCategoriesResult = categoriesApi.endpoints.getCategories.select()

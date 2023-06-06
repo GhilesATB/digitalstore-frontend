@@ -59,7 +59,7 @@ const CreateCategoryForm = ({handleClose}) => {
 
                 });
         },
-      });
+    });
 
     return (<form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
         <BaseForm

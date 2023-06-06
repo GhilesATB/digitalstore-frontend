@@ -8,18 +8,22 @@ import "./style/dark.scss";
 import {useContext} from "react";
 import {DarkModeContext} from "./context/darkModeContext";
 import MainDrawer from "../src/hoc/DashBoard";
+import SignIn from '../src/pages/User/SignIn'
+import Front from '../src/pages/front'
+import { AuthGuard } from "./utils/HandleAuthentication";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
+      <AuthGuard></AuthGuard>
       <BrowserRouter>
         <Routes>
             <Route path="/">
-                <Route index element={<Home/>}/>
-                <Route path="login" element={<Login/>}/>
-                <Route path="test" element={<MainDrawer/>}/>
+                <Route index element={<Front/>}/>
+                <Route path="login" element={<SignIn/>}/>
+                <Route path="/admin" element={<Home/>}/>
                 <Route path="categories">
                     <Route index element={<Categories/>}/>
                     <Route path=":categoryId" element={<Single/>}/>
@@ -28,7 +32,7 @@ function App() {
                         element={<New/>}
                     />
                 </Route>
-                <Route path="products">
+                <Route path="/admin/products">
                     <Route index element={<Categories/>}/>
                     <Route path=":productId" element={<Single/>}/>
                     <Route

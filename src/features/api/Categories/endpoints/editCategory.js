@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export const editCategoryEndpoint = (builder) => {
     return builder.mutation({
         query: (category) => ({
@@ -5,7 +7,8 @@ export const editCategoryEndpoint = (builder) => {
             method: "POST",
             body: category,
             headers: {
-                "Accept": "application/json; charset=UTF-8",
+                "content-Type":'application/json',
+                "Authorization":"Bearer " + decodeURIComponent(Cookies.get('token')),
             },
         }),
         invalidatesTags: ["categories"],

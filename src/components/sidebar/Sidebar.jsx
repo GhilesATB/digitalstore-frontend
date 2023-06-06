@@ -3,6 +3,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import StoreMenu from "./StoreMenu";
 import AccountMenu from "./AccountMenu";
+import PermissionsGate from "../../utils/PermissionHandler";
 
 const useStyles = (theme) => ({
     root: {
@@ -33,15 +34,17 @@ export default function Sidebar() {
             }
             className={useStyles.root}
         >
+        <PermissionsGate permission={'can-view'}>
             <StoreMenu
                 useStyles={useStyles}
                 open={open}
-            />
+            /></PermissionsGate>
 
+<PermissionsGate permission={['can-edit']}>
             <AccountMenu
                 useStyles={useStyles}
                 open={open}
-            />
+            /></PermissionsGate>
 
         </List>
     );
