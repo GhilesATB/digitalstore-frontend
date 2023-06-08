@@ -4,7 +4,8 @@ export const deleteCategoryEndpoint = (builder) => {
             url: `api/categories/${payload.id}`,
             method: "DELETE",
             headers: {
-                "Content-type": "application/json; charset=UTF-8",
+                "content-Type": 'application/json',
+                "Authorization": "Bearer " + localStorage.getItem('token'),
             },
         }),
         invalidatesTags: ["categories"],

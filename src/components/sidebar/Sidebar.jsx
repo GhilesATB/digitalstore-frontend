@@ -1,110 +1,74 @@
-import "./sidebar.scss";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import StoreIcon from "@mui/icons-material/Store";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import {Link} from "react-router-dom";
-import CategoryIcon from '@mui/icons-material/Category';
-import {DarkModeContext} from "../../context/darkModeContext";
-import {useContext} from "react";
+import React from "react";
+import ListSubheader from "@mui/material/ListSubheader";
+import List from "@mui/material/List";
+import StoreMenu from "./StoreMenu";
+import AccountMenu from "./AccountMenu";
+import PermissionsGate from "../../utils/PermissionHandler";
+import {useSelector} from 'react-redux'
+import LogoutIcon from '@mui/icons-material/Logout';
+import {Button} from "@mui/material";
+import {useLazyUserLogoutQuery} from "../../features/api/Users/UsersApi";
+import {useNavigate} from "react-router-dom";
 
-const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
-  return (
-    <div className="sidebar">
-      <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">Admin</span>
-        </Link>
-      </div>
-      <hr />
-      <div className="center">
-          <ul>
-              <p className="title">MAIN</p>
-              <li>
-                  <DashboardIcon className="icon"/>
-                  <span>Dashboard</span>
-              </li>
-              <p className="title">LISTS</p>
-              <Link to="/users" style={{textDecoration: "none"}}>
-                  <li>
-                      <CategoryIcon className="icon"/>
-                      <span>Categories</span>
-                  </li>
-              </Link>
-              <Link to="/test" style={{textDecoration: "none"}}>
-                  <li>
-                      <PersonOutlineIcon className="icon"/>
-                      <span>test</span>
-                  </li>
-              </Link>
-              <Link to="/products" style={{textDecoration: "none"}}>
-                  <li>
-                      <StoreIcon className="icon"/>
-                      <span>Products</span>
-                  </li>
-              </Link>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>Orders</span>
-          </li>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <p className="title">USEFUL</p>
-          <li>
-            <InsertChartIcon className="icon" />
-            <span>Stats</span>
-          </li>
-          <li>
-            <NotificationsNoneIcon className="icon" />
-            <span>Notifications</span>
-          </li>
-          <p className="title">SERVICE</p>
-          <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
-          </li>
-          <li>
-            <PsychologyOutlinedIcon className="icon" />
-            <span>Logs</span>
-          </li>
-          <li>
-            <SettingsApplicationsIcon className="icon" />
-            <span>Settings</span>
-          </li>
-          <p className="title">USER</p>
-          <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
-          </li>
-          <li>
-            <ExitToAppIcon className="icon" />
-            <span>Logout</span>
-          </li>
-        </ul>
-      </div>
-      <div className="bottom">
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
-        ></div>
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
-        ></div>
-      </div>
-    </div>
-  );
-};
+const useStyles = (theme) => ({
+    root: {
+        width: "100%",
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper
+    },
+    nested: {
+        paddingLeft: '40px'
+    },
+    nestedSecondLevel: {
+        paddingLeft: '60px'
+    }
+});
 
-export default Sidebar;
+export default function Sidebar() {
+
+    const [open, setOpen] = React.useState(true);
+    const nav = useNavigate();
+    const users = useSelector(state => state.users)
+    const [logoutUser] = useLazyUserLogoutQuery();
+
+    const logout = () => {
+        logoutUser()
+            .unwrap()
+            .then((response) => {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                nav('/login');
+            })
+            .catch(error => error);
+    };
+
+    return (
+        <List
+            component="nav"
+            color="primary"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                    USER :{users?.Auth?.name}
+                    <Button sx={{"float": "right"}} onClick={() => logout()}>
+                        <LogoutIcon variant="contained"/>Logout</Button>
+                </ListSubheader>
+            }
+            className={useStyles.root}
+        >
+            <PermissionsGate permission={'view-category'}>
+                <StoreMenu
+                    useStyles={useStyles}
+                    open={open}
+                /></PermissionsGate>
+
+            <PermissionsGate permission={'can-edit'}>
+                <AccountMenu
+                    useStyles={useStyles}
+                    open={open}
+                /></PermissionsGate>
+
+        </List>
+    );
+}
+  

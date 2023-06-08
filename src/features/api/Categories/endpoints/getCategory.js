@@ -5,7 +5,12 @@ export const categoryByIdEndpoint = (builder) => {
             if (!id) return ;
             return {
                 url: `api/categories/${id}`,
+                headers: {
+                    "content-Type": 'application/json',
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
+                },
             }
+            
         },
         providesTags: ["categories"],
     });

@@ -1,88 +1,103 @@
-import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import * as React from "react";
-import {useState} from "react";
-import {Alert, Button, CircularProgress, Stack, TextField} from "@mui/material";
-import {useGetCategoryByIdQuery} from "../../../features/api/Categories/categoriesApi";
+import {CircularProgress} from "@mui/material";
+import {useEditCategoryMutation, useGetCategoryByIdQuery} from "../../../features/api/Categories/categoriesApi";
+import {useFormik} from "formik";
+import {validation} from "./createSchema";
+import {setFormikErrors} from '../../../utils/HandleErrors';
+import {notifyError, notifySuccess} from "../../../utils/Notifications";
+import BaseForm from "./BaseForm";
 
 
-const EditUserForm = (props) => {
+const EditCategoryForm = ({handleClose, categoryId}) => {
 
-    const {data: category, isLoading, isSuccess, isError, error} = useGetCategoryByIdQuery(props?.id);
+    const [selectedFile, setSelectedFile] = React.useState();
+    const [isFilePicked, setIsFilePicked] = React.useState(false);
 
-    const [file, setFile] = useState("");
-
-    const form = () => {
-
-        return (<form>
-            <Stack spacing={5} sx={{margin: '30px', width: '300px'}}>
-
-                <img style={{borderRadius: "50%", width: "150px", position: "relative", margin: "auto"}}
-                     src={
-                         file
-                             ? URL.createObjectURL(file)
-                             : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                     }
-                     alt=""
-                />
-                <div className="formInput">
-                    <label htmlFor="file">
-                        Image: <DriveFolderUploadOutlinedIcon className="icon"/>
-                    </label>
-                    <input
-                        type="file"
-                        id="file"
-                        onChange={(e) => setFile(e.target.files[0])}
-                        style={{display: "none"}}
-                    />
-                </div>
-
-                <TextField
-                    id="standard-multiline-static"
-                    label="Name"
-                    variant="standard"
-                    defaultValue={category?.data?.name}
-                    inputProps={{inputMode: "text"}}
-                    placeholder="Name"
-                    InputLabelProps={{shrink: true}}
-                />
-
-                <TextField
-                    id="standard-multiline-static"
-                    label="Description"
-                    multiline
-                    rows={5}
-                    variant="standard"
-                    maxRows={5}
-                    defaultValue={category?.data?.description}
-                    inputProps={{inputMode: "text"}}
-                    placeholder="Description ..."
-                    InputLabelProps={{shrink: true}}
-                />
-
-                <Button variant="contained">
-                    save
-                </Button>
-            </Stack>
-        </form>)
+    const changeHandler = (event) => {
+        setSelectedFile(event.target.files[0]);
+        formik.setFieldValue('image', event.target.files[0]);
+        setIsFilePicked(true);
+    };
+    const cancelFile = () => {
+        setSelectedFile(null);
+        setIsFilePicked(false);
     }
 
-    let content
+    const {
+        data: category,
+        isLoading: isLoadingCategory,
+        isSuccess: isSuccessCategoryFetch,
+        isError: isErrorCategoryFetch,
+        error: errorCategory
+    } = useGetCategoryByIdQuery(categoryId);
 
-    if (isLoading) {
-        content = <CircularProgress />
-    } else if (isSuccess) {
+    const [editCategory] = useEditCategoryMutation();
 
-        content = form();
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: category?.data ?? {},
+        validationSchema: validation,
+        onSubmit: (values) => {
 
-    } else if (isError) {
-        content = <div><Alert variant="filled" severity="error">
-            This is an error alert — check it out!
-        </Alert></div>
+            let data = new FormData();
+            Object.entries(values).forEach(entry => {
+                const [key, value] = entry;
+                data.append(key, value);
+            });
+
+            if (selectedFile) {
+                data.set('image', selectedFile);
+            } else {
+                data.delete('image');
+            }
+            data.set('id', category?.data?.id);
+
+            editCategory(data).unwrap()
+                .then(() => {
+                    notifySuccess();
+                    formik.resetForm();
+                    handleClose();
+                })
+                .catch((error) => {
+                    if (error.status === 422) {
+                        setFormikErrors(formik, error.data.errors);
+                    } else {
+                        notifyError(error.data.message);
+                        handleClose();
+                    }
+                });
+        },
+    });
+
+    if (isErrorCategoryFetch) {
+        notifyError(errorCategory.data.message);
+        handleClose();
     }
 
-    return (<>{content}</>);
+    let content = '';
 
+    if (isLoadingCategory) {
+        content = <CircularProgress sx={{
+            position: "absolute",
+            top: "calc(50% - 32px)",
+            left: 'calc(50% - 32px)'
+        }}
+        />
+    } else if (!isLoadingCategory && isSuccessCategoryFetch) {
+        content = <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+            <BaseForm
+                formik={formik}
+                title={"Update category"}
+                image={category?.data?.image}
+                changeHandler={changeHandler}
+                selectedFile={selectedFile}
+                isFilePicked={isFilePicked}
+                cancelFile={cancelFile}
+            />
+        </form>;
+    }
 
+    return content;
 }
 
-export default EditUserForm;
+export default EditCategoryForm;
