@@ -15,6 +15,12 @@ import {Link} from "react-router-dom";
 const ProductSubMenu = ({
     open,
 }) =>{
+
+    const [openSecondLevel, setOpenSecondLevel] = React.useState(false);
+
+    const handleClickSecondLevel = () => {
+        setOpenSecondLevel(!openSecondLevel);
+    };
     return (
         <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
