@@ -4,11 +4,9 @@ import {Navigate} from 'react-router-dom'
 export const isAuthenticated = () => {
     const token = localStorage.getItem('token') ?? null;
 
-    if (token === 'undefined' || token === null) {
-        return false;
-    }
+    return !(token === 'undefined' || token === null);
 
-    return true;
+
 };
 
 export const AuthGuard = (props) => {

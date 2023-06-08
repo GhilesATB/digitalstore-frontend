@@ -1,12 +1,10 @@
-let permissions;
-const user = null;
 
-export default function PermissionsGate({
-                                            children,
-                                            permission
-                                        }) {
+
+export default function PermissionsGate({children, permission}) {
+    let permissions;
+    let user = null;
     try {
-        const user = JSON.parse(localStorage.getItem('user'));
+        user = JSON.parse(localStorage.getItem('user'));
     } catch (error) {
         permissions = {};
     }

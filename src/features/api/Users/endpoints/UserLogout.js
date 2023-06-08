@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export const userLogoutEndpoint = (builder) => {
     return builder.query({
         query: () => ({
