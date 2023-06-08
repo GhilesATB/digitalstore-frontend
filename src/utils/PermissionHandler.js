@@ -1,21 +1,20 @@
-
-const permissions = {
-  CAN_VIEW:'can-view',
-  CAN_EDIT:'can-edit',
-  CAN_DELETE:'can-delete',
-}
-const hasPermission = ({permission}) => {
-  return Object.values(permissions).includes(permission);
-};
+let permissions;
+const user = null;
 
 export default function PermissionsGate({
-  children,
-  permission
-}) {
-  
-  const permissionGranted = hasPermission({ permission });
+                                            children,
+                                            permission
+                                        }) {
+    try {
+        const user = JSON.parse(localStorage.getItem('user'));
+    } catch (error) {
+        permissions = {};
+    }
 
-  if (!permissionGranted) return <></>
+    permissions = user?.permissions;
 
-  return <>{children}</>;
+    const hasPermission = permissions?.includes(permission) ?? false;
+    if (!hasPermission) return <></>
+
+    return <>{children}</>;
 }

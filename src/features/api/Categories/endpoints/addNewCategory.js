@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export const addNewCategoryEndpoint = (builder) => {
     return builder.mutation({
         query: (payload) => ({
@@ -8,8 +6,8 @@ export const addNewCategoryEndpoint = (builder) => {
             body: payload,
             formData: true,
             headers: {
-                "content-Type":'application/json',
-                "Authorization":"Bearer " + decodeURIComponent(Cookies.get('token')),
+                "content-Type": 'application/json',
+                "Authorization": "Bearer " + localStorage.getItem('token'),
             },
         }),
         invalidatesTags: ["categories"],

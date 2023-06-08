@@ -8,10 +8,6 @@ export const getCsrfTokenEndpoint = (builder) => {
             Accept: "application/json",
           },
         }),
-        transformResponse: (apiResponse, meta, arg) => {
-        
-        return meta;
-      },
         invalidatesTags: ["users"],
     });
 }

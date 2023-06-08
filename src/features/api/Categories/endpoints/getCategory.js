@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export const categoryByIdEndpoint = (builder) => {
     return builder.query({
         query: (id = '') => {
@@ -8,8 +6,8 @@ export const categoryByIdEndpoint = (builder) => {
             return {
                 url: `api/categories/${id}`,
                 headers: {
-                    "content-Type":'application/json',
-                    "Authorization":"Bearer " + decodeURIComponent(Cookies.get('token')),
+                    "content-Type": 'application/json',
+                    "Authorization": "Bearer " + localStorage.getItem('token'),
                 },
             }
             

@@ -1,18 +1,23 @@
-import Cookies from 'js-cookie'
-import { Navigate, useNavigate } from 'react-router-dom';
+import {Navigate} from 'react-router-dom'
+
 
 export const isAuthenticated = () => {
-    if(decodeURIComponent(Cookies.get('token'))) {
-        return true;
+    const token = localStorage.getItem('token') ?? null;
+
+    if (token === 'undefined' || token === null) {
+        return false;
     }
 
-    return false;
+    return true;
 };
 
-export const AuthGuard = (props) =>{
-    if(!isAuthenticated()){
-        return <Navigate to="/auth"/>
+export const AuthGuard = (props) => {
+
+    if (!isAuthenticated()) {
+        return <><Navigate replace to={'/login'}/></>;
     }
 
     return props.children
 }
+
+export default AuthGuard;

@@ -11,22 +11,23 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Paper } from '@mui/material';
-import { notifyError } from '../../utils/Notifications';
-import { useLazyGetCsrfTokenQuery, useLazyUserLoginQuery } from '../../features/api/Users/UsersApi';
-import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import { AuthGuard, isAuthenticated } from '../../utils/HandleAuthentication';
+import {Paper} from '@mui/material';
+import {notifyError} from '../../utils/Notifications';
+import {useLazyGetCsrfTokenQuery, useLazyUserLoginQuery} from '../../features/api/Users/UsersApi';
+import {useFormik} from "formik";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from 'react-redux';
+import {setAuth} from '../../store/reduces/Users';
 
 export const SignIn = () => {
 
-  let navigate = useNavigate();
-  const [userLogin, isLoading] = useLazyUserLoginQuery();
-  const [getCsrfToken, isLoadingCsrf] = useLazyGetCsrfTokenQuery();
+    let navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [userLogin, isLoading] = useLazyUserLoginQuery();
+    const [getCsrfToken, isLoadingCsrf] = useLazyGetCsrfTokenQuery();
 
-  
-  const formik = useFormik({
+
+    const formik = useFormik({
     initialValues: {"email":"","password":""},
     onSubmit: (values) => {
       getCsrfToken()
@@ -34,7 +35,10 @@ export const SignIn = () => {
         userLogin(values)
             .unwrap()
             .then((response) => {
-              navigate('/admin');
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                dispatch(setAuth({...response.user, token: response.token, isAuth: true}));
+                navigate('/admin');
             })
             .catch((error) => {
                 notifyError(error.data.message);
