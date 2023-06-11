@@ -9,8 +9,8 @@ export const categoriesEndpoint = (builder) => {
                     method: "get",
                     Credential: true,
                     headers: {
-                        "content-Type": 'application/json',
                         "Authorization": "Bearer " + localStorage.getItem('token'),
+                        "accept": "application/json",
                     },
             }
         },

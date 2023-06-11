@@ -6,8 +6,8 @@ export const categoryByIdEndpoint = (builder) => {
             return {
                 url: `api/categories/${id}`,
                 headers: {
-                    "content-Type": 'application/json',
                     "Authorization": "Bearer " + localStorage.getItem('token'),
+                    "accept": "application/json",
                 },
             }
             

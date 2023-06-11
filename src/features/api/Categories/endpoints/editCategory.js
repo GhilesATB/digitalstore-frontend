@@ -7,8 +7,8 @@ export const editCategoryEndpoint = (builder) => {
             method: "POST",
             body: category,
             headers: {
-                "content-Type":'application/json',
-                "Authorization":"Bearer " + decodeURIComponent(Cookies.get('token')),
+                "Authorization": "Bearer " + localStorage.getItem('token'),
+                "accept": "application/json",
             },
         }),
         invalidatesTags: ["categories"],

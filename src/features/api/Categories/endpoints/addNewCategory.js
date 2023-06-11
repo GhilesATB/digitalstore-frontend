@@ -6,8 +6,8 @@ export const addNewCategoryEndpoint = (builder) => {
             body: payload,
             formData: true,
             headers: {
-                "content-Type": 'application/json',
                 "Authorization": "Bearer " + localStorage.getItem('token'),
+                "accept": "application/json",
             },
         }),
         invalidatesTags: ["categories"],

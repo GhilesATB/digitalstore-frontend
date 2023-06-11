@@ -64,7 +64,7 @@ const CreateCategoryForm = ({handleClose}) => {
     return (<form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
         <BaseForm
             formik={formik}
-            title={"Update category"}
+            title={"Create category"}
             image={null}
             changeHandler={changeHandler}
             selectedFile={selectedFile}
