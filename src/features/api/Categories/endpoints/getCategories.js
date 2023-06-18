@@ -2,10 +2,12 @@ export const categoriesEndpoint = (builder) => {
     return builder.query({
         query: (arg) => {
 
-            arg = {page: 1, pageSize: 10, ...arg}
+            
+            let {pagination, filter} = arg
+
                 return {
                     url: "api/categories",
-                    params: {...arg},
+                    params: {...pagination,...filter?? null},
                     method: "get",
                     Credential: true,
                     headers: {

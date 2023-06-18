@@ -5,12 +5,20 @@ import {RemoveDialog} from './Form/RemoveDialog';
 import CategoriesDataGrid from './CategoriesDataGrid';
 import ActionForm from './ActionFom';
 import TopBar from './TopBar';
+import FilterDialog from './Form/FilterDialog';
 
-export const Categories = ({categories, paginationModel, setPaginationModel}) => {
-
+export const Categories = ({
+    categories,
+    paginationModel,
+    setPaginationModel,
+    onFilterChange,
+    isLoading,
+    request,
+    setPaginationWithFilters,
+    openFilterDialog
+}) => {
     const [state, setState] = React.useState(false);
     const [formAction, setFormAction] = React.useState(null);
-
     const [categoryId, setCategoryId] = React.useState(null);
     const [open, setOpen] = React.useState(false);
 
@@ -37,6 +45,17 @@ export const Categories = ({categories, paginationModel, setPaginationModel}) =>
         handleClickOpen();
     }
 
+      const filterForm = () =>{
+        return (
+            <FilterDialog
+                request= {request}
+                open={openFilterDialog} 
+                filter={setPaginationWithFilters} 
+                paginationModel={paginationModel}>
+            </FilterDialog>
+        )
+    }
+
     return (
         <>
             <RemoveDialog
@@ -60,11 +79,15 @@ export const Categories = ({categories, paginationModel, setPaginationModel}) =>
                 <TopBar renderForm={renderForm}/>
                 <div style={{height: '77vh', width: '100%'}}>
                     <CategoriesDataGrid
+                        filterForm = {filterForm}
                         categories={categories}
                         paginationModel={paginationModel}
                         setPaginationModel={setPaginationModel}
+                        onFilterChange={onFilterChange}
                         renderForm={renderForm}
                         remove={remove}
+                        isLoading={isLoading}
+                        filterMode="server"
                     />
                 </div>
             </Stack>

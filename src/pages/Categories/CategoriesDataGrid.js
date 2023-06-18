@@ -1,9 +1,19 @@
-import {Box} from "@mui/material";
+import {Box, TablePagination, TextField} from "@mui/material";
 import DataTableButtonGroup from "../../components/datatable/dataTableButtongroup";
 import {DataGrid} from '@mui/x-data-grid';
+import React from "react";
 
 
-const CategoriesDataGrid = ({categories,paginationModel, setPaginationModel, renderForm, remove}) =>{
+const CategoriesDataGrid = ({
+    categories,
+    paginationModel,
+    setPaginationModel,
+    onFilterChange,
+    renderForm,
+    remove,
+    isLoading,
+    filterForm
+}) =>{
     const columns = [
         {
             field: 'name', headerName: 'Name', flex: 1,
@@ -52,6 +62,11 @@ const CategoriesDataGrid = ({categories,paginationModel, setPaginationModel, ren
     return (
         <DataGrid
             sx={{borderRadius: 0}}
+            /*componentsProps={
+                {
+                    panel: {as: filterForm},
+                }
+            }*/
             rows={categories?.data}
             /*localeText={{
                 toolbarDensity: 'Size',
@@ -59,18 +74,23 @@ const CategoriesDataGrid = ({categories,paginationModel, setPaginationModel, ren
                 toolbarDensityCompact: 'Small',
                 toolbarDensityStandard: 'Medium',
                 toolbarDensityComfortable: 'Large',
-              }}
-              slots={{
-                toolbar: GridToolbar,
               }}*/
+              slots={{
+                //toolbar: GridToolbar,
+                panel: filterForm,
+              }}
             columns={columns}
             rowCount={categories?.meta?.total}
-            paginationMode="server"
             paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
             pageSizeOptions={[5, 10, 20, 25]}
             checkboxSelection
             disableRowSelectionOnClick {...categories?.data}
+            onPaginationModelChange={setPaginationModel}
+            onFilterModelChange={onFilterChange}
+            isLoading={isLoading}
+            filterMode="server"
+            paginationMode="server"
+            hideFooterPagination = {false}
         />
     );
 }
