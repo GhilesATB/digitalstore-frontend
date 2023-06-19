@@ -6,7 +6,6 @@ import {Box, Button, CircularProgress, Pagination, Typography} from "@mui/materi
 import Dashboard from '../../hoc/DashBoard'
 import {WarningSharp} from "@mui/icons-material";
 import AuthGuard from "../../utils/HandleAuthentication";
-import { isString } from "formik";
 import { useSelector } from "react-redux";
 import { setGlobalQuery } from "../../store/reduces/categories";
 import { store } from "../../store";
@@ -30,18 +29,18 @@ const CategoryPage = () => {
         setRequest({...request,page:paginationModel.page, pageSize:paginationModel.pageSize})
     ),[paginationModel]);
 
-    const setPaginationWithFilters = (operator,value) => {
+    const setPaginationWithFilters = (field, operator,value,sort) => {
         setRequest({...request,page:paginationModel.page, pageSize:paginationModel.pageSize})
          //fix this check why on footer page change value is equal to pagination {page, pageSize}
          
          if(value){
-            store.dispatch(setGlobalQuery({...request, operator:operator,value:value,page:paginationModel.page, pageSize:paginationModel.pageSize}));
-            setRequest({...request, operator:operator,value:value,page:paginationModel.page, pageSize:paginationModel.pageSize});
+            store.dispatch(setGlobalQuery({...request, field:field,operator:operator,value:value,sort:sort,page:paginationModel.page, pageSize:paginationModel.pageSize}));
+            setRequest({...request, field:field,operator:operator,value:value,sort:sort,page:paginationModel.page, pageSize:paginationModel.pageSize});
         } else {
             const { data } = request || '';
 
             if(data){
-                setRequest({...request, operator:operator,value:value,page:paginationModel.page, pageSize:paginationModel.pageSize});
+                setRequest({...request, field:field, operator:operator,value:value,sort:sort,page:paginationModel.page, pageSize:paginationModel.pageSize});
             } else {
                 setRequest({page:paginationModel.page, pageSize:paginationModel.pageSize});
             }
@@ -52,7 +51,7 @@ const CategoryPage = () => {
     
 
     const resetPagination = () => {
-        setPaginationModel({page: 0, pageSize: 10 });
+        setRequest({page:paginationModel.page, pageSize:paginationModel.pageSize});
     };
 
     //create a filter button to query when filtering is done
@@ -89,10 +88,9 @@ const CategoryPage = () => {
                         paginationModel={paginationModel}
                         setPaginationModel={setPaginationModel}
                         setPaginationWithFilters = {setPaginationWithFilters}
-                        onFilterChange={onFilterChange}
+                        resetPagination = {resetPagination}
                         filterMode="server"
-                    /> <Button onClick={() => setPaginationWithFilters()}>filter</Button>
-                    <Button onClick={() => resetPagination()}>reset filter</Button></>: ""
+                    /></>: ""
                 }
                 {isError ?
                     <>

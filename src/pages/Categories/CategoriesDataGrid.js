@@ -1,22 +1,25 @@
-import {Box, TablePagination, TextField} from "@mui/material";
+import {Box, Button, ButtonGroup} from "@mui/material";
 import DataTableButtonGroup from "../../components/datatable/dataTableButtongroup";
-import {DataGrid} from '@mui/x-data-grid';
+import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import React from "react";
+
 
 
 const CategoriesDataGrid = ({
     categories,
     paginationModel,
     setPaginationModel,
-    onFilterChange,
     renderForm,
     remove,
     isLoading,
     filterForm
 }) =>{
+    const options =  {disableColumnMenu :true,
+    sortable: false}
     const columns = [
         {
-            field: 'name', headerName: 'Name', flex: 1,
+            field: 'name', headerName: 'Name', flex: 1, ...options,
+           
             renderCell: (params) => {
                 return (
                     <>
@@ -36,13 +39,14 @@ const CategoriesDataGrid = ({
                 );
             }
         },
-        {field: 'description', headerName: 'Description', flex: 1},
-        {field: 'created_at', headerName: 'Creation date', flex: 1},
-        {field: 'updated_at', headerName: 'updated date', flex: 1},
+        {field: 'description', headerName: 'Description', flex: 1,...options,},
+        {field: 'created_at', headerName: 'Creation date', flex: 1,...options,},
+        {field: 'updated_at', headerName: 'updated date', flex: 1,...options,},
         {
             field: 'actions',
             headerName: 'Action',
             flex: 1,
+            ...options,
             renderCell: (params) => {
                 return (
                     <>
@@ -60,13 +64,15 @@ const CategoriesDataGrid = ({
     ];
 
     return (
+        <>
+
         <DataGrid
-            sx={{borderRadius: 0}}
-            /*componentsProps={
+            sx={{borderRadius: 0, width:'100%'}}
+            componentsProps={
                 {
                     panel: {as: filterForm},
                 }
-            }*/
+            }
             rows={categories?.data}
             /*localeText={{
                 toolbarDensity: 'Size',
@@ -75,10 +81,10 @@ const CategoriesDataGrid = ({
                 toolbarDensityStandard: 'Medium',
                 toolbarDensityComfortable: 'Large',
               }}*/
-              slots={{
+              /*slots={{
                 //toolbar: GridToolbar,
                 panel: filterForm,
-              }}
+              }}*/
             columns={columns}
             rowCount={categories?.meta?.total}
             paginationModel={paginationModel}
@@ -86,12 +92,11 @@ const CategoriesDataGrid = ({
             checkboxSelection
             disableRowSelectionOnClick {...categories?.data}
             onPaginationModelChange={setPaginationModel}
-            onFilterModelChange={onFilterChange}
             isLoading={isLoading}
             filterMode="server"
             paginationMode="server"
             hideFooterPagination = {false}
-        />
+        /></>
     );
 }
 
