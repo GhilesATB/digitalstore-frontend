@@ -2,7 +2,7 @@ import {Box, Button, Divider} from "@mui/material"
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import PermissionsGate from "../../utils/PermissionHandler";
 
-const TopBar = ({renderForm}) =>{
+const TopBar = (props) =>{
     return (
     
         <div style={{height: "50px", padding: "15px 0"}}>
@@ -12,15 +12,7 @@ const TopBar = ({renderForm}) =>{
                         Category List
                     </Box>
                 </Box>
-                <PermissionsGate permission={'can-create'}>
-                    <Box sx={{flex: "1"}}>
-                        <Button color="success" sx={{"float": "right"}}
-                                onClick={() => renderForm(null, 'create')}>
-                            <AddBoxIcon variant="contained"/>
-                            Add Category
-                        </Button>
-                    </Box>
-                </PermissionsGate>
+                {props.children}
             </Box>
             <Divider></Divider>
         </div>

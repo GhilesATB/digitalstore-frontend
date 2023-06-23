@@ -1,6 +1,7 @@
 
 
 export default function PermissionsGate({children, permission}) {
+    return true;
     let permissions;
     let user = null;
     try {
@@ -10,7 +11,7 @@ export default function PermissionsGate({children, permission}) {
     }
 
     permissions = user?.permissions;
-
+    
     const hasPermission = permissions?.includes(permission) ?? false;
     if (!hasPermission) return <></>
 

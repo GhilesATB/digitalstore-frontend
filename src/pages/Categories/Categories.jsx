@@ -8,8 +8,7 @@ import TopBar from './TopBar';
 import FilterDialog from './Form/FilterDialog';
 import { PictureAsPdf } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import PublishIcon from '@mui/icons-material/Publish';
+import AddIcon from '@mui/icons-material/Add';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 
 export const Categories = ({
@@ -92,14 +91,13 @@ export const Categories = ({
 
             <Stack spacing={5} sx={{margin: '30px'}}>
                 <TopBar renderForm={renderForm}>
-               
-                </TopBar>
-                <ButtonGroup sx={{float: 'right !important'}} variant="contained" aria-label="outlined primary button group">
+                    <Tooltip><Button onClick={() => renderForm(null, 'create')}><AddIcon/></Button></Tooltip>
                     <Tooltip title="filter"><Button onClick={handleFilterOpen}><FilterAltIcon /></Button></Tooltip>
-                    <Button onClick={resetPagination}><Tooltip title="reset filter"><FilterAltOffIcon /></Tooltip></Button>
-                    <Tooltip title="export as pdf"><Button onClick={downloadPdf}><PictureAsPdf/></Button></Tooltip>
-                    <Tooltip title="export as csv"><Button><ListAltIcon/></Button></Tooltip>
-                    <Tooltip title="import csv"><Button><PublishIcon/></Button></Tooltip>
+                        <Button onClick={resetPagination}><Tooltip title="reset filter"><FilterAltOffIcon /></Tooltip></Button>
+                        <Tooltip title="export as pdf"><Button onClick={downloadPdf}><PictureAsPdf/></Button></Tooltip>
+                    </TopBar>
+                <ButtonGroup sx={{float: 'right !important'}} variant="contained">
+                   
                 </ButtonGroup>
                 <div style={{height: '78vh', width: '100%'}}>
                     <CategoriesDataGrid

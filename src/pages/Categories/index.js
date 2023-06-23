@@ -76,7 +76,6 @@ const CategoryPage = () => {
                     /> : ""}
                 {isSuccess ?
                 <>
-                
                     <Categories
                         request= {request}
                         openFilterDialog={open}

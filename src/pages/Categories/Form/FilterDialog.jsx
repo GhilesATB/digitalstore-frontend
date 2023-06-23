@@ -45,7 +45,7 @@ const FilterDialog = ({
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"select filter options"}
+                    {"Select filter options"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">    
