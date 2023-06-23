@@ -89,13 +89,13 @@ const CategoriesDataGrid = ({
             rowCount={categories?.meta?.total}
             paginationModel={paginationModel}
             pageSizeOptions={[5, 10, 20, 25]}
-            checkboxSelection
+            //checkboxSelection
             disableRowSelectionOnClick {...categories?.data}
             onPaginationModelChange={setPaginationModel}
             isLoading={isLoading}
             filterMode="server"
             paginationMode="server"
-            hideFooterPagination = {false}
+            keepNonExistentRowsSelected 
         /></>
     );
 }

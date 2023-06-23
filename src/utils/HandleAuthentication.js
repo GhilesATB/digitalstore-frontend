@@ -11,6 +11,7 @@ export const isAuthenticated = () => {
 
 export const AuthGuard = (props) => {
 
+    //TODO : handle unauthorized exception
     if (!isAuthenticated()) {
         return <><Navigate replace to={'/login'}/></>;
     }
