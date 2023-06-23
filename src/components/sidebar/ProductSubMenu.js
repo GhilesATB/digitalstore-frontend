@@ -11,6 +11,8 @@ import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import {ListItemButton} from "@mui/material";
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import {Link} from "react-router-dom";
+import './style.css';
+
 
 const ProductSubMenu = ({
     open,
@@ -40,16 +42,18 @@ const ProductSubMenu = ({
 
         <Collapse in={openSecondLevel} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-            <Link to='/admin/categories'>
+            
                 <ListItemButton>
+                <Link to='/admin/categories'>
                     <ListItem sx={{paddingLeft: "50px"}}>
                         <ListItemIcon>
                             <WidgetsOutlinedIcon color="primary"/>
                         </ListItemIcon>
                         <ListItemText primary="Categories"/>
                     </ListItem>
+                    </Link>
                 </ListItemButton>
-            </Link>
+            
             <ListItemButton>
                 <ListItem sx={{paddingLeft: "50px"}}>
                     <ListItemIcon>
