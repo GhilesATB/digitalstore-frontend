@@ -12,6 +12,7 @@ import {useLazyGetAuthUserQuery} from "./features/api/Users/UsersApi";
 import {useDispatch, useSelector} from "react-redux";
 import {setAuth} from "./store/reduces/Users";
 import SignUp from "./pages/User/SignUp";
+import Profile from "./pages/Profile";
 
 function App() {
     const {darkMode} = useContext(DarkModeContext);
@@ -48,6 +49,7 @@ function App() {
                                 element={<New/>}
                             />
                         </Route>
+                        <Route path="/admin/profile" element={<Profile/>}></Route>
                         <Route path="/admin/products">
                             <Route index element={<Categories/>}/>
                             <Route path=":productId" element={<Single/>}/>

@@ -2,7 +2,7 @@ import "./list.scss"
 import Categories from "./Categories";
 import * as React from "react";
 import {useGetCategoriesQuery} from "../../features/api/Categories/categoriesApi";
-import {Box, Button, CircularProgress, Pagination, Typography} from "@mui/material";
+import {Box, CircularProgress, Typography} from "@mui/material";
 import Dashboard from '../../hoc/DashBoard'
 import {WarningSharp} from "@mui/icons-material";
 import AuthGuard from "../../utils/HandleAuthentication";
@@ -95,7 +95,7 @@ const CategoryPage = () => {
                     <>
                         <Box>
                             <WarningSharp
-                                color="primary"
+                                color="error"
                                 sx={{
                                     position: "absolute",
                                     top: "calc(50% - 160px)",

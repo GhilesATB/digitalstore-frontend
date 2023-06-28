@@ -6,7 +6,7 @@ import CategoriesDataGrid from './CategoriesDataGrid';
 import ActionForm from './ActionFom';
 import TopBar from './TopBar';
 import FilterDialog from './Form/FilterDialog';
-import { PictureAsPdf } from '@mui/icons-material';
+import { ListAltOutlined, PictureAsPdf } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AddIcon from '@mui/icons-material/Add';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
@@ -90,12 +90,14 @@ export const Categories = ({
             </CategoryDrawer>
 
             <Stack spacing={5} sx={{margin: '30px'}}>
-                <TopBar renderForm={renderForm}>
+                <TopBar title = {"CATEGORY LIST"} renderForm={renderForm}>
                     <Tooltip><Button onClick={() => renderForm(null, 'create')}><AddIcon/></Button></Tooltip>
                     <Tooltip title="filter"><Button onClick={handleFilterOpen}><FilterAltIcon /></Button></Tooltip>
                         <Button onClick={resetPagination}><Tooltip title="reset filter"><FilterAltOffIcon /></Tooltip></Button>
+                        <Tooltip title="order asc"><Button onClick={handleFilterOpen}><ListAltOutlined />asc</Button></Tooltip>
+                        <Tooltip title="order desc"><Button onClick={handleFilterOpen}><ListAltOutlined />desc</Button></Tooltip>
                         <Tooltip title="export as pdf"><Button onClick={downloadPdf}><PictureAsPdf/></Button></Tooltip>
-                    </TopBar>
+                </TopBar>
                 <ButtonGroup sx={{float: 'right !important'}} variant="contained">
                    
                 </ButtonGroup>

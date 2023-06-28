@@ -9,10 +9,16 @@ const TopBar = (props) =>{
             <Box sx={{display:"flex"}}>
                 <Box sx={{flex: "1"}}>
                     <Box sx={{margin: "8px 6px", 'text-transform': 'uppercase'}}>
-                        Category List
+                        {props.title}
                     </Box>
                 </Box>
-                {props.children}
+
+                <Box sx={{flex: "1"}}>
+                    <Box sx={{margin: "8px 6px", float:'right',position:'relative'}}>
+                        {props.children}
+                    </Box>
+                </Box>
+                
             </Box>
             <Divider></Divider>
         </div>

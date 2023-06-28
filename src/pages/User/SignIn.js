@@ -43,7 +43,6 @@ export const SignIn = () => {
             .catch((error) => {
                 notifyError(error.data.message);
             });
-        return response;
       }).catch((error) => {
         notifyError(error.data.message);
     });

@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import {notifyError} from "../../../utils/Notifications";
 
 
-const ViewUserForm = ({categoryId, handleClose}) => {
+const ViewCategoriyForm = ({categoryId, handleClose}) => {
 
     const {data: category, isLoading, isSuccess, isError, error} = useGetCategoryByIdQuery(categoryId);
 
@@ -59,4 +59,4 @@ const ViewUserForm = ({categoryId, handleClose}) => {
     return (<>{form()}</>);
 }
 
-export default ViewUserForm;
+export default ViewCategoriyForm;
