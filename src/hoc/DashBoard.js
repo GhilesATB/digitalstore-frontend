@@ -1,40 +1,23 @@
 import * as React from 'react';
-import {createTheme, styled} from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
-import ListItemText from '@mui/material/ListItemText';
+import { ListItemText } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Sidebar from '../components/sidebar/Sidebar'
-import {frFR} from '@mui/material/locale';
+import Sidebar from '../components/sidebar/Sidebar';
 
-const drawerWidth = 280;
 
-const openedMixin = (theme) => ({
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: 'hidden',
-});
 
-const closedMixin = (theme) => ({
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(8)} + 1px)`,
-    },
-});
 
 const DrawerHeader = styled('div')(({theme}) => ({
     display: 'flex',
@@ -46,82 +29,86 @@ const DrawerHeader = styled('div')(({theme}) => ({
     ...theme.mixins.toolbar,
 }));
 
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const drawerWidth = 240;
+
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({theme, open}) => ({
-    zIndex: theme.zIndex.drawer + 1,
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: '100%'/*`calc(100% - ${drawerWidth}px)`*/,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
+  }),
 }));
 
-const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
-    ({theme, open}) => ({
-        width: 500,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-        boxSizing: 'border-box',
-        
-        '& .css-10hburv-MuiTypography-root': {
-            fontFamily: 'EB Garamond',
-            fontWeight: "bold",
-            textAlign:"left"
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    '& .MuiDrawer-paper': {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      boxSizing: 'border-box',
+      ...(!open && {
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        width: theme.spacing(7),
+        [theme.breakpoints.up('sm')]: {
+          width: theme.spacing(9),
         },
-        ...(open && {
-            ...openedMixin(theme),
-            '& .MuiDrawer-paper': openedMixin(theme),
-        }),
-        ...(!open && {
-            ...closedMixin(theme),
-            '& .MuiDrawer-paper': closedMixin(theme),
-        }),
-    }),
+      }),
+    },
+  }),
 );
 
-export default function MainDrawer(props) {
-    const theme = createTheme(
-        {
-            palette: {
-                primary: {main: '#1976d2'},
-            },
-        },
-        frFR,
-    );
-    const [open, setOpen] = React.useState(false);
+// TODO remove, this demo shouldn't need to reset the theme.
+const defaultTheme = createTheme();
 
-    const handleDrawerOpen = (e) => {
-        setOpen(true);
-    };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+export default function Dashboard(props) {
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-    return (
-        <Box sx={{display: 'flex'}}>
-            <CssBaseline
-            />
-            <AppBar position="fixed" sx={{zIndex:-99999}} open={open}>
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="absolute" open={open}>
+        <AppBar position="fixed" sx={{zIndex:-99999}} open={open}>               
                 <Toolbar sx={{zIndex:99999}} variant="dense">
-                </Toolbar>
-            </AppBar>
-            <Drawer id={"menu-drawer"} variant="permanent" sx={{zIndex:99999}} open={open} >
-                <DrawerHeader sx={{color:"#1565c0"}}>               
-                    <ListItemText primary={"ADMIN"} sx={{opacity: open ? 1 : 0}}/>    
-                <Divider/>
                 <IconButton
                         color="inherit"
                         aria-label="open drawer"
-                        onClick={handleDrawerOpen}
+                        onClick={toggleDrawer}
                         edge="start"
                         sx={{
                             left:'-5px',
@@ -130,10 +117,17 @@ export default function MainDrawer(props) {
                     >
                     <MenuIcon/>
                     </IconButton>
+                </Toolbar>
+            </AppBar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+        <DrawerHeader sx={{color:"#1565c0"}}>               
+                    <ListItemText primary={"ADMIN"} sx={{opacity: open ? 1 : 0}}/>    
+                <Divider/>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
-                        onClick={handleDrawerClose}
+                        onClick={toggleDrawer}
                         edge="start"
                         sx={{
                             left:'-5px',
@@ -143,20 +137,32 @@ export default function MainDrawer(props) {
                     <CloseIcon/>
                     </IconButton>
                 </DrawerHeader>
-               <Sidebar open={open}/>
-            </Drawer>
-
-            <Box component="main" sx={{
-                flexGrow: 1, p: 3,
-                width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
-                transition: theme.transitions.create('all', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-                
-            }}>
-                {props.children}
-            </Box>
+                <Sidebar open={true}/>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+            <Grid>
+              {/* Recent Orders */}
+              <Grid item xs={12} sx={{ position: "relative",top: "-15px",display: 'flex', flexDirection: 'column',borderRadius:'none' }}>
+                <Paper >
+                    {props.children}
+                </Paper>
+              </Grid>
+            </Grid>
+            
         </Box>
-    );
+      </Box>
+    </ThemeProvider>
+  );
 }

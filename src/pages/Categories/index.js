@@ -18,12 +18,6 @@ const CategoryPage = () => {
     const [request, setRequest] = React.useState({...paginationModel,...currentQuery});
     const [open, setOpen] = React.useState(false);
 
-    const onFilterChange = React.useCallback((queryOptions) => {
-      setQueryOptions({ queryOptions: { ...queryOptions } });
-      const {field, operator} = queryOptions.items[0];
-      setRequest({ ...paginationModel,field:field, operator:operator});
-      setOpen(true);
-    }, []);
 
     React.useEffect(() =>(
         setRequest({...request,page:paginationModel.page, pageSize:paginationModel.pageSize})
