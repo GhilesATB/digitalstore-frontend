@@ -7,29 +7,35 @@ import ActionForm from './ActionFom';
 import TopBar from './TopBar';
 import FilterDialog from './Form/FilterDialog';
 import {PictureAsPdf } from '@mui/icons-material';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AddIcon from '@mui/icons-material/Add';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 
-export const Categories = ({
-    categories,
-    paginationModel,
-    setPaginationModel,
-    isLoading,
-    resetPagination,
-    setPaginationWithFilters,
-    openFilterDialog,
-    CustomColumnMenu
-}) => {
+
+import {useGetCategoriesQuery} from "../../features/api/Categories/categoriesApi";
+import { useSelector } from "react-redux";
+import { setGlobalQuery } from "../../store/reduces/categories";
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { ArrowDownward, ArrowUpward, FilterAlt } from "@mui/icons-material";
+import { GridColumnMenu } from '@mui/x-data-grid';
+import { store } from "../../store";
+
+export const Categories = () => {
     
     const [state, setState] = React.useState(false);
     const [formAction, setFormAction] = React.useState(null);
     const [categoryId, setCategoryId] = React.useState(null);
+    const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+    const [filterOpen, setFilterOpen] = React.useState(false);
+    const currentQuery = useSelector(state => state.categories.request);
+    const [paginationModel, setPaginationModel] = React.useState({page: 0, pageSize: 10 });
+    const [request, setRequest] = React.useState({...paginationModel,...currentQuery});
     const [open, setOpen] = React.useState(false);
-    const [filterOpen, setFilterOpen] = React.useState(openFilterDialog);
 
+    
     const handleDeleteDialogClickOpen = () => {
-        setOpen(true);
+        setOpenDeleteDialog(true);
     };
 
     const handleFilterOpen = () => {
@@ -41,7 +47,7 @@ export const Categories = ({
     };
 
     const handleDeleteDialogClose = () => {
-        setOpen(false);
+        setOpenDeleteDialog(false);
     };
 
     const renderForm = (categoryId, formAction) => {
@@ -59,22 +65,106 @@ export const Categories = ({
         handleDeleteDialogClickOpen();
     }
 
-      const filterForm = () =>{
+    
+    const setPaginationWithFilters = ({field, operator,value,sort}) => {
+        setRequest({...request,page:paginationModel.page, pageSize:paginationModel.pageSize})
+         
+         if(value){
+            store.dispatch(setGlobalQuery({...request, field:field,operator:operator,value:value,sort:sort,page:paginationModel.page, pageSize:paginationModel.pageSize}));
+            setRequest({...request, field:field,operator:operator,value:value,sort:sort,page:paginationModel.page, pageSize:paginationModel.pageSize});
+        } else {
+            const { data } = request || '';
+
+            if(data){
+                setRequest({...request, field:field, operator:operator,value:value,sort:sort,page:paginationModel.page, pageSize:paginationModel.pageSize});
+            } else {
+                setRequest({page:paginationModel.page, pageSize:paginationModel.pageSize});
+            }
+        }
+
+        setOpen(false);
+    };
+    
+
+    const resetPagination = () => {
+        setRequest({page:paginationModel.page, pageSize:paginationModel.pageSize});
+    };
+    
+    const filterForm = () =>{
         return (
             <FilterDialog
                 open={filterOpen} 
                 openDialog = {handleFilterOpen}
                 closeDialog = {handleFilterClose}
                 filter={setPaginationWithFilters} 
-                paginationModel={paginationModel}>
+            >
             </FilterDialog>
         )
     }
+    const CustomUserItem = ({ filterHandler,SortHandlerAsc,SortHandlerDesc}) => {    
+        return (
+            <>
+            <MenuItem onClick={filterHandler}>
+            <ListItemIcon>
+                <FilterAlt fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Filter</ListItemText>
+            </MenuItem>
+
+            <MenuItem onClick={SortHandlerAsc}>
+            <ListItemIcon>
+            <ArrowUpward fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Order ASC</ListItemText>
+            </MenuItem>
+
+            <MenuItem onClick={SortHandlerDesc}>
+            <ListItemIcon>
+            <ArrowDownward fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Order DESC</ListItemText>
+            </MenuItem>
+            </>
+        );
+    }
+        
+    const CustomColumnMenu = (props) => {
+        return (
+            <GridColumnMenu
+            {...props}
+            slots={{
+                // Hide `columnMenuColumnsItem`
+                columnMenuColumnsItem: null,
+                columnMenuFilterItem: null,
+                columnMenuUserItem: CustomUserItem,
+            }}
+            slotProps={{
+                columnMenuUserItem: {
+                    // set `displayOrder` for new item
+                    displayOrder: 15,
+                    // pass additional props
+                    filterHandler: () => setFilterOpen(true),
+                    SortHandlerAsc: () =>  setRequest({...request,field:props.colDef.field,sort:"asc"}),
+                    SortHandlerDesc: () => setRequest({...request,filed:props.colDef.field,sort:"desc"}),
+                },
+                }}
+            />
+        );
+    }
+    
+    const {
+        data: categories,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetCategoriesQuery({pagination:paginationModel, filter:request});
+
 
     return (
         <>
             <RemoveDialog
-                open={open}
+                open={openDeleteDialog}
                 handleClickOpen={handleDeleteDialogClickOpen}
                 handleClose={handleDeleteDialogClose}
                 categoryId={categoryId}
@@ -96,23 +186,24 @@ export const Categories = ({
                     
                 <ButtonGroup sx={{float: 'right !important'}} variant="contained">
                 <Tooltip title="new user"><Button onClick={() => renderForm(null, 'create')}><AddIcon/></Button></Tooltip>
-                    <Tooltip title="filter"><Button onClick={handleFilterOpen}><FilterAltIcon /></Button></Tooltip>
                     <Button onClick={resetPagination}><Tooltip title="reset filter"><FilterAltOffIcon /></Tooltip></Button>
                     <Tooltip title="export as pdf"><Button onClick={downloadPdf}><PictureAsPdf/></Button></Tooltip>
                 </ButtonGroup>
                 </TopBar>
                 <div style={{height: '78vh', width: '100%'}}>
-                    <CategoriesDataGrid
+                    {
+                        isSuccess ? <CategoriesDataGrid
                         CustomColumnMenu = {CustomColumnMenu}
                         filterForm = {filterForm}
                         categories={categories}
                         paginationModel={paginationModel}
-                        setPaginationModel={setPaginationModel}
+                        setPaginationModel={setPaginationWithFilters}
                         renderForm={renderForm}
                         remove={remove}
-                        isLoading={isLoading}
                         filterMode="server"
-                    />
+                    />: ''
+                    }
+                    
                 </div>
             </Stack>
         </>

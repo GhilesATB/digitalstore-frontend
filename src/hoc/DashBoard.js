@@ -102,9 +102,16 @@ export default function Dashboard(props) {
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
-        <AppBar position="fixed" sx={{zIndex:-99999}} open={open}>               
-                <Toolbar sx={{zIndex:99999}} variant="dense">
+        <AppBar position="absolute" open={open} sx={{zIndex:1}}>
+        <AppBar position="fixed" sx={{zIndex:-99}} open={open}>               
+                <Toolbar sx={{zIndex:-99}} variant="dense">
+                </Toolbar>
+            </AppBar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+        <DrawerHeader sx={{color:"#1565c0"}}>               
+                    <ListItemText primary={"ADMIN"} sx={{opacity: open ? 1 : 0}}/>    
+                <Divider/>
                 <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -117,13 +124,6 @@ export default function Dashboard(props) {
                     >
                     <MenuIcon/>
                     </IconButton>
-                </Toolbar>
-            </AppBar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-        <DrawerHeader sx={{color:"#1565c0"}}>               
-                    <ListItemText primary={"ADMIN"} sx={{opacity: open ? 1 : 0}}/>    
-                <Divider/>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"

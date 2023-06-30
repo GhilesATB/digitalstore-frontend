@@ -6,11 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { InputLabel, NativeSelect, Stack, TextField } from '@mui/material';
-import Grid from '@mui/material/Grid';
 
 const FilterDialog = ({
     open,
-    openDialog,
     closeDialog,
     filter,
 }) => {
@@ -35,6 +33,12 @@ const FilterDialog = ({
 
         setSort(e.target.value);
     };
+
+
+    const filterAndClose = ({field, filterValue,value,sort}) =>{
+        filter({field, filterValue,value,sort})
+        closeDialog();
+    }
 
     return (
          <div>
@@ -118,7 +122,7 @@ const FilterDialog = ({
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button color="info" onClick={() => filter(field, filterValue,value,sort)}>filter</Button>
+                    <Button color="info" onClick={() => filterAndClose({field, filterValue,value,sort})}>filter</Button>
                     <Button color="info" onClick={closeDialog} autoFocus>
                         cancel
                     </Button>
