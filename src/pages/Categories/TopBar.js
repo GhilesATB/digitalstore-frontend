@@ -1,28 +1,32 @@
 import {Box, Button, Divider} from "@mui/material"
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import PermissionsGate from "../../utils/PermissionHandler";
+import { Grid } from "@mui/material/node";
 
 const TopBar = (props) =>{
     return (
     
-        <div style={{height: "50px", padding: "15px 0"}}>
-            <Box sx={{display:"flex"}}>
-                <Box sx={{flex: "1"}}>
-                    <Box sx={{margin: "8px 6px", 'text-transform': 'uppercase'}}>
-                        {props.title}
-                    </Box>
+    <>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={6}>
+            <Box sx={{flex: "1"}}>
+                <Box sx={{margin: "8px 6px", 'text-transform': 'uppercase'}}>
+                    {props.title}
                 </Box>
-
-                <Box sx={{flex: "1"}}>
-                    <Box sx={{margin: "8px 6px", float:'right',position:'relative'}}>
-                        {props.children}
-                    </Box>
-                </Box>
-                
             </Box>
-            <Divider></Divider>
-        </div>
-    
+        </Grid>
+        <Grid item xs={12} md={6}>
+            <Box sx={{flex: "1"}}>
+                <Box sx={{margin: "8px 6px", float:'right',position:'relative'}}>
+                    {props.children}
+                </Box>
+            </Box>
+        </Grid>
+      </Grid>
+    </Box>
+    <Divider></Divider>
+    </>  
     );
 }
 

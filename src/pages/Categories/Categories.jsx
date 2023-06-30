@@ -6,7 +6,7 @@ import CategoriesDataGrid from './CategoriesDataGrid';
 import ActionForm from './ActionFom';
 import TopBar from './TopBar';
 import FilterDialog from './Form/FilterDialog';
-import { ListAltOutlined, PictureAsPdf } from '@mui/icons-material';
+import {PictureAsPdf } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AddIcon from '@mui/icons-material/Add';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
@@ -18,8 +18,10 @@ export const Categories = ({
     isLoading,
     resetPagination,
     setPaginationWithFilters,
-    openFilterDialog
+    openFilterDialog,
+    CustomColumnMenu
 }) => {
+    
     const [state, setState] = React.useState(false);
     const [formAction, setFormAction] = React.useState(null);
     const [categoryId, setCategoryId] = React.useState(null);
@@ -91,18 +93,17 @@ export const Categories = ({
 
             <Stack spacing={5} sx={{margin: '30px'}}>
                 <TopBar title = {"CATEGORY LIST"} renderForm={renderForm}>
-                    <Tooltip><Button onClick={() => renderForm(null, 'create')}><AddIcon/></Button></Tooltip>
-                    <Tooltip title="filter"><Button onClick={handleFilterOpen}><FilterAltIcon /></Button></Tooltip>
-                        <Button onClick={resetPagination}><Tooltip title="reset filter"><FilterAltOffIcon /></Tooltip></Button>
-                        <Tooltip title="order asc"><Button onClick={handleFilterOpen}><ListAltOutlined />asc</Button></Tooltip>
-                        <Tooltip title="order desc"><Button onClick={handleFilterOpen}><ListAltOutlined />desc</Button></Tooltip>
-                        <Tooltip title="export as pdf"><Button onClick={downloadPdf}><PictureAsPdf/></Button></Tooltip>
-                </TopBar>
+                    
                 <ButtonGroup sx={{float: 'right !important'}} variant="contained">
-                   
+                <Tooltip title="new user"><Button onClick={() => renderForm(null, 'create')}><AddIcon/></Button></Tooltip>
+                    <Tooltip title="filter"><Button onClick={handleFilterOpen}><FilterAltIcon /></Button></Tooltip>
+                    <Button onClick={resetPagination}><Tooltip title="reset filter"><FilterAltOffIcon /></Tooltip></Button>
+                    <Tooltip title="export as pdf"><Button onClick={downloadPdf}><PictureAsPdf/></Button></Tooltip>
                 </ButtonGroup>
+                </TopBar>
                 <div style={{height: '78vh', width: '100%'}}>
                     <CategoriesDataGrid
+                        CustomColumnMenu = {CustomColumnMenu}
                         filterForm = {filterForm}
                         categories={categories}
                         paginationModel={paginationModel}

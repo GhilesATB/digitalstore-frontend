@@ -1,9 +1,7 @@
 import {Box, Button, ButtonGroup} from "@mui/material";
 import DataTableButtonGroup from "../../components/datatable/dataTableButtongroup";
-import {DataGrid, GridToolbar} from '@mui/x-data-grid';
+import {DataGrid, GridColumnMenu, GridToolbar} from '@mui/x-data-grid';
 import React from "react";
-
-
 
 const CategoriesDataGrid = ({
     categories,
@@ -12,13 +10,27 @@ const CategoriesDataGrid = ({
     renderForm,
     remove,
     isLoading,
-    filterForm
+    filterForm,
+    CustomColumnMenu
 }) =>{
-    const options =  {disableColumnMenu :true,
-    sortable: false}
+
+
+
+    const options =  {
+        disableColumnMenu: false, 
+        sortable: false
+    }
     const columns = [
         {
             field: 'name', headerName: 'Name', flex: 1, ...options,
+            /*renderHeader: (params) => (
+                <strong>
+                  {'Birthday '}
+                  <span role="img" aria-label="enjoy">
+                    🎂
+                  </span>
+                </strong>
+              ),*/
            
             renderCell: (params) => {
                 return (
@@ -81,10 +93,11 @@ const CategoriesDataGrid = ({
                 toolbarDensityStandard: 'Medium',
                 toolbarDensityComfortable: 'Large',
               }}*/
-              /*slots={{
+              slots={{
                 //toolbar: GridToolbar,
-                panel: filterForm,
-              }}*/
+                //panel: filterForm,
+                columnMenu: CustomColumnMenu
+              }}
             columns={columns}
             rowCount={categories?.meta?.total}
             paginationModel={paginationModel}

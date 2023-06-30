@@ -8,6 +8,11 @@ import {WarningSharp} from "@mui/icons-material";
 import AuthGuard from "../../utils/HandleAuthentication";
 import { useSelector } from "react-redux";
 import { setGlobalQuery } from "../../store/reduces/categories";
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { ArrowDownward, ArrowUpward, FilterAlt } from "@mui/icons-material";
+import { GridColumnMenu } from '@mui/x-data-grid';
 import { store } from "../../store";
 
 const CategoryPage = () => {
@@ -18,12 +23,11 @@ const CategoryPage = () => {
     const [request, setRequest] = React.useState({...paginationModel,...currentQuery});
     const [open, setOpen] = React.useState(false);
 
-
     React.useEffect(() =>(
         setRequest({...request,page:paginationModel.page, pageSize:paginationModel.pageSize})
     ),[paginationModel]);
 
-    const setPaginationWithFilters = (field, operator,value,sort) => {
+    const setPaginationWithFilters = ({field, operator,value,sort}) => {
         setRequest({...request,page:paginationModel.page, pageSize:paginationModel.pageSize})
          //fix this check why on footer page change value is equal to pagination {page, pageSize}
          
@@ -48,6 +52,67 @@ const CategoryPage = () => {
         setRequest({page:paginationModel.page, pageSize:paginationModel.pageSize});
     };
 
+
+        /* menu header*/
+
+        const CustomUserItem = (props) => {
+            const asc = "ASC";
+            const desc = "DESC";
+    
+            const { filterHandler, SortHandlerAsc,SortHandlerDesc} = props;
+            return (
+                <>
+              <MenuItem onClick={filterHandler}>
+                <ListItemIcon>
+                  <FilterAlt fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Filter</ListItemText>
+              </MenuItem>
+    
+                <MenuItem onClick={SortHandlerAsc}>
+                <ListItemIcon>
+                <ArrowUpward fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Order ASC</ListItemText>
+                </MenuItem>
+    
+                <MenuItem onClick={SortHandlerDesc}>
+                <ListItemIcon>
+                <ArrowDownward fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Order DESC</ListItemText>
+                </MenuItem>
+                </>
+            );
+          }
+          
+          const CustomColumnMenu = (props) => {
+            return (
+                <GridColumnMenu
+                {...props}
+                slots={{
+                  // Hide `columnMenuColumnsItem`
+                  columnMenuColumnsItem: null,
+                  columnMenuFilterItem: null,
+                  columnMenuUserItem: CustomUserItem,
+                }}
+                slotProps={{
+                    columnMenuUserItem: {
+                      // set `displayOrder` for new item
+                      displayOrder: 15,
+                      // pass additional props
+                      filterHandler: () => setOpen(true),
+                      SortHandlerAsc: () =>  setRequest({...request,field:props.colDef.field,sort:"asc"}),
+                      SortHandlerDesc: () => setRequest({...request,filed:props.colDef.field,sort:"desc"}),
+                    },
+                  }}
+              />
+            );
+          }
+    
+        /*end*/
+
+        
     //create a filter button to query when filtering is done
     
     const {
@@ -71,6 +136,7 @@ const CategoryPage = () => {
                 {isSuccess ?
                 <>
                     <Categories
+                        CustomColumnMenu = {CustomColumnMenu}
                         request= {request}
                         openFilterDialog={open}
                         categories={categories}
